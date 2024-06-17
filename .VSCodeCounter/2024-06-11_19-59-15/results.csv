@@ -1,5 +1,0 @@
-"filename", "language", "Go Template File", "Go", "comment", "blank", "total"
-"/Users/qujiale/code/sonar/6/mpgw/testdata/protoexample/test.pb.go", "Go", 0, 246, 13, 40, 299
-"/Users/qujiale/code/sonar/6/mpgw/testdata/template/hello.tmpl", "Go Template File", 1, 0, 0, 0, 1
-"/Users/qujiale/code/sonar/6/mpgw/testdata/template/raw.tmpl", "Go Template File", 1, 0, 0, 0, 1
-"Total", "-", 2, 246, 13, 40, 301
