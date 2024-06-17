@@ -25,11 +25,11 @@ func TestError(t *testing.T) {
 	assert.Equal(t, err.SetType(ErrorTypePublic), err)
 	assert.Equal(t, ErrorTypePublic, err.Type)
 
-	assert.Equal(t, err.SetMeta("some data"), err)
-	assert.Equal(t, "some data", err.Meta)
+	assert.Equal(t, err.SetMeta(literal_1840), err)
+	assert.Equal(t, literal_1840, err.Meta)
 	assert.Equal(t, H{
 		"error": baseError.Error(),
-		"meta":  "some data",
+		"meta":  literal_1840,
 	}, err.JSON())
 
 	jsonBytes, _ := json.Marshal(err)
@@ -37,23 +37,23 @@ func TestError(t *testing.T) {
 
 	err.SetMeta(H{ //nolint: errcheck
 		"status": "200",
-		"data":   "some data",
+		"data":   literal_1840,
 	})
 	assert.Equal(t, H{
 		"error":  baseError.Error(),
 		"status": "200",
-		"data":   "some data",
+		"data":   literal_1840,
 	}, err.JSON())
 
 	err.SetMeta(H{ //nolint: errcheck
 		"error":  "custom error",
 		"status": "200",
-		"data":   "some data",
+		"data":   literal_1840,
 	})
 	assert.Equal(t, H{
 		"error":  "custom error",
 		"status": "200",
-		"data":   "some data",
+		"data":   literal_1840,
 	}, err.JSON())
 
 	type customError struct {
@@ -67,7 +67,7 @@ func TestError(t *testing.T) {
 func TestErrorSlice(t *testing.T) {
 	errs := errorMsgs{
 		{Err: errors.New("first"), Type: ErrorTypePrivate},
-		{Err: errors.New("second"), Type: ErrorTypePrivate, Meta: "some data"},
+		{Err: errors.New("second"), Type: ErrorTypePrivate, Meta: literal_1840},
 		{Err: errors.New("third"), Type: ErrorTypePublic, Meta: H{"status": "400"}},
 	}
 
@@ -88,7 +88,7 @@ Error #03: third
 `, errs.String())
 	assert.Equal(t, []any{
 		H{"error": "first"},
-		H{"error": "second", "meta": "some data"},
+		H{"error": "second", "meta": literal_1840},
 		H{"error": "third", "status": "400"},
 	}, errs.JSON())
 	jsonBytes, _ := json.Marshal(errs)
@@ -126,3 +126,5 @@ func TestErrorUnwrap(t *testing.T) {
 	var testErr TestErr
 	assert.True(t, errors.As(err, &testErr))
 }
+
+const literal_1840 = "some data"

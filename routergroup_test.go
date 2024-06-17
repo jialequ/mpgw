@@ -92,33 +92,33 @@ func performRequestInGroup(t *testing.T, method string) {
 func TestRouterGroupInvalidStatic(t *testing.T) {
 	router := New()
 	assert.Panics(t, func() {
-		router.Static("/path/:param", "/")
+		router.Static(literal_7163, "/")
 	})
 
 	assert.Panics(t, func() {
-		router.Static("/path/*param", "/")
+		router.Static(literal_3094, "/")
 	})
 }
 
 func TestRouterGroupInvalidStaticFile(t *testing.T) {
 	router := New()
 	assert.Panics(t, func() {
-		router.StaticFile("/path/:param", "favicon.ico")
+		router.StaticFile(literal_7163, literal_6519)
 	})
 
 	assert.Panics(t, func() {
-		router.StaticFile("/path/*param", "favicon.ico")
+		router.StaticFile(literal_3094, literal_6519)
 	})
 }
 
 func TestRouterGroupInvalidStaticFileFS(t *testing.T) {
 	router := New()
 	assert.Panics(t, func() {
-		router.StaticFileFS("/path/:param", "favicon.ico", Dir(".", false))
+		router.StaticFileFS(literal_7163, literal_6519, Dir(".", false))
 	})
 
 	assert.Panics(t, func() {
-		router.StaticFileFS("/path/*param", "favicon.ico", Dir(".", false))
+		router.StaticFileFS(literal_3094, literal_6519, Dir(".", false))
 	})
 }
 
@@ -193,3 +193,9 @@ func testRoutesInterface(t *testing.T, r IRoutes) {
 	assert.Equal(t, r, r.Static("/static", "."))
 	assert.Equal(t, r, r.StaticFS("/static2", Dir(".", false)))
 }
+
+const literal_7163 = "/path/:param"
+
+const literal_3094 = "/path/*param"
+
+const literal_6519 = "favicon.ico"

@@ -85,12 +85,12 @@ func TestBasicAuthSucceed(t *testing.T) {
 	accounts := Accounts{"admin": "password"}
 	router := New()
 	router.Use(BasicAuth(accounts))
-	router.GET("/login", func(c *Context) {
+	router.GET(literal_6594, func(c *Context) {
 		c.String(http.StatusOK, c.MustGet(AuthUserKey).(string))
 	})
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/login", nil)
+	req, _ := http.NewRequest("GET", literal_6594, nil)
 	req.Header.Set("Authorization", authorizationHeader("admin", "password"))
 	router.ServeHTTP(w, req)
 
@@ -103,14 +103,14 @@ func TestBasicAuth401(t *testing.T) {
 	accounts := Accounts{"foo": "bar"}
 	router := New()
 	router.Use(BasicAuth(accounts))
-	router.GET("/login", func(c *Context) {
+	router.GET(literal_6594, func(c *Context) {
 		called = true
 		c.String(http.StatusOK, c.MustGet(AuthUserKey).(string))
 	})
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/login", nil)
-	req.Header.Set("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte("admin:password")))
+	req, _ := http.NewRequest("GET", literal_6594, nil)
+	req.Header.Set("Authorization", literal_8219+base64.StdEncoding.EncodeToString([]byte(literal_3570)))
 	router.ServeHTTP(w, req)
 
 	assert.False(t, called)
@@ -123,14 +123,14 @@ func TestBasicAuth401WithCustomRealm(t *testing.T) {
 	accounts := Accounts{"foo": "bar"}
 	router := New()
 	router.Use(BasicAuthForRealm(accounts, "My Custom \"Realm\""))
-	router.GET("/login", func(c *Context) {
+	router.GET(literal_6594, func(c *Context) {
 		called = true
 		c.String(http.StatusOK, c.MustGet(AuthUserKey).(string))
 	})
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/login", nil)
-	req.Header.Set("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte("admin:password")))
+	req, _ := http.NewRequest("GET", literal_6594, nil)
+	req.Header.Set("Authorization", literal_8219+base64.StdEncoding.EncodeToString([]byte(literal_3570)))
 	router.ServeHTTP(w, req)
 
 	assert.False(t, called)
@@ -167,10 +167,16 @@ func TestBasicAuthForProxy407(t *testing.T) {
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/test", nil)
-	req.Header.Set("Proxy-Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte("admin:password")))
+	req.Header.Set("Proxy-Authorization", literal_8219+base64.StdEncoding.EncodeToString([]byte(literal_3570)))
 	router.ServeHTTP(w, req)
 
 	assert.False(t, called)
 	assert.Equal(t, http.StatusProxyAuthRequired, w.Code)
 	assert.Equal(t, "Basic realm=\"Proxy Authorization Required\"", w.Header().Get("Proxy-Authenticate"))
 }
+
+const literal_6594 = "/login"
+
+const literal_8219 = "Basic "
+
+const literal_3570 = "admin:password"

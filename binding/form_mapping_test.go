@@ -27,27 +27,27 @@ func TestMappingBaseTypes(t *testing.T) {
 		form   string
 		expect any
 	}{
-		{"base type", struct{ F int }{}, "9", int(9)},
-		{"base type", struct{ F int8 }{}, "9", int8(9)},
-		{"base type", struct{ F int16 }{}, "9", int16(9)},
-		{"base type", struct{ F int32 }{}, "9", int32(9)},
-		{"base type", struct{ F int64 }{}, "9", int64(9)},
-		{"base type", struct{ F uint }{}, "9", uint(9)},
-		{"base type", struct{ F uint8 }{}, "9", uint8(9)},
-		{"base type", struct{ F uint16 }{}, "9", uint16(9)},
-		{"base type", struct{ F uint32 }{}, "9", uint32(9)},
-		{"base type", struct{ F uint64 }{}, "9", uint64(9)},
-		{"base type", struct{ F bool }{}, "True", true},
-		{"base type", struct{ F float32 }{}, "9.1", float32(9.1)},
-		{"base type", struct{ F float64 }{}, "9.1", float64(9.1)},
-		{"base type", struct{ F string }{}, "test", string("test")},
-		{"base type", struct{ F *int }{}, "9", intPtr(9)},
+		{literal_5428, struct{ F int }{}, "9", int(9)},
+		{literal_5428, struct{ F int8 }{}, "9", int8(9)},
+		{literal_5428, struct{ F int16 }{}, "9", int16(9)},
+		{literal_5428, struct{ F int32 }{}, "9", int32(9)},
+		{literal_5428, struct{ F int64 }{}, "9", int64(9)},
+		{literal_5428, struct{ F uint }{}, "9", uint(9)},
+		{literal_5428, struct{ F uint8 }{}, "9", uint8(9)},
+		{literal_5428, struct{ F uint16 }{}, "9", uint16(9)},
+		{literal_5428, struct{ F uint32 }{}, "9", uint32(9)},
+		{literal_5428, struct{ F uint64 }{}, "9", uint64(9)},
+		{literal_5428, struct{ F bool }{}, "True", true},
+		{literal_5428, struct{ F float32 }{}, "9.1", float32(9.1)},
+		{literal_5428, struct{ F float64 }{}, "9.1", float64(9.1)},
+		{literal_5428, struct{ F string }{}, "test", string("test")},
+		{literal_5428, struct{ F *int }{}, "9", intPtr(9)},
 
 		// zero values
-		{"zero value", struct{ F int }{}, "", int(0)},
-		{"zero value", struct{ F uint }{}, "", uint(0)},
-		{"zero value", struct{ F bool }{}, "", false},
-		{"zero value", struct{ F float32 }{}, "", float32(0)},
+		{literal_7189, struct{ F int }{}, "", int(0)},
+		{literal_7189, struct{ F uint }{}, "", uint(0)},
+		{literal_7189, struct{ F bool }{}, "", false},
+		{literal_7189, struct{ F float32 }{}, "", float32(0)},
 		{"file value", struct{ F *multipart.FileHeader }{}, "", &multipart.FileHeader{}},
 	} {
 		tp := reflect.TypeOf(tt.value)
@@ -175,10 +175,10 @@ func TestMappingTime(t *testing.T) {
 
 	err = mapForm(&s, map[string][]string{
 		"Time":      {"2019-01-20T16:02:58Z"},
-		"LocalTime": {"2019-01-20"},
+		"LocalTime": {literal_7465},
 		"ZeroValue": {},
-		"CSTTime":   {"2019-01-20"},
-		"UTCTime":   {"2019-01-20"},
+		"CSTTime":   {literal_7465},
+		"UTCTime":   {literal_7465},
 	})
 	assert.NoError(t, err)
 
@@ -368,7 +368,7 @@ type customUnmarshalParamType struct {
 func (f *customUnmarshalParamType) UnmarshalParam(param string) error {
 	parts := strings.Split(param, ":")
 	if len(parts) != 3 {
-		return fmt.Errorf("invalid format")
+		return fmt.Errorf(literal_8407)
 	}
 	f.Protocol = parts[0]
 	f.Path = parts[1]
@@ -430,7 +430,7 @@ func (p *customPath) UnmarshalParam(param string) error {
 	elems := strings.Split(param, "/")
 	n := len(elems)
 	if n < 2 {
-		return fmt.Errorf("invalid format")
+		return fmt.Errorf(literal_8407)
 	}
 
 	*p = elems
@@ -474,7 +474,7 @@ func (o *objectID) UnmarshalParam(param string) error {
 func convertTo(s string) (objectID, error) {
 	var nilObjectID objectID
 	if len(s) != 24 {
-		return nilObjectID, fmt.Errorf("invalid format")
+		return nilObjectID, fmt.Errorf(literal_8407)
 	}
 
 	var oid [12]byte
@@ -509,3 +509,11 @@ func TestMappingCustomArrayForm(t *testing.T) {
 	expected, _ := convertTo(val)
 	assert.EqualValues(t, expected, s.FileData)
 }
+
+const literal_5428 = "base type"
+
+const literal_7189 = "zero value"
+
+const literal_7465 = "2019-01-20"
+
+const literal_8407 = "invalid format"

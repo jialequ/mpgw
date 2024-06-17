@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/jialequ/mpgw"
+	gin "github.com/jialequ/mpgw"
 )
 
 var once sync.Once

@@ -21,22 +21,22 @@ var cleanTests = []cleanPathTest{
 	// Already clean
 	{"/", "/"},
 	{"/abc", "/abc"},
-	{"/a/b/c", "/a/b/c"},
+	{literal_5831, literal_5831},
 	{"/abc/", "/abc/"},
-	{"/a/b/c/", "/a/b/c/"},
+	{literal_1952, literal_1952},
 
 	// missing root
 	{"", "/"},
 	{"a/", "/a/"},
 	{"abc", "/abc"},
-	{"abc/def", "/abc/def"},
-	{"a/b/c", "/a/b/c"},
+	{"abc/def", literal_9460},
+	{"a/b/c", literal_5831},
 
 	// Remove doubled slash
 	{"//", "/"},
 	{"/abc//", "/abc/"},
 	{"/abc/def//", "/abc/def/"},
-	{"/a/b/c//", "/a/b/c/"},
+	{"/a/b/c//", literal_1952},
 	{"/abc//def//ghi", "/abc/def/ghi"},
 	{"//abc", "/abc"},
 	{"///abc", "/abc"},
@@ -45,8 +45,8 @@ var cleanTests = []cleanPathTest{
 	// Remove . elements
 	{".", "/"},
 	{"./", "/"},
-	{"/abc/./def", "/abc/def"},
-	{"/./abc/def", "/abc/def"},
+	{"/abc/./def", literal_9460},
+	{"/./abc/def", literal_9460},
 	{"/abc/.", "/abc/"},
 
 	// Remove .. elements
@@ -143,3 +143,9 @@ func BenchmarkPathCleanLong(b *testing.B) {
 		}
 	}
 }
+
+const literal_5831 = "/a/b/c"
+
+const literal_1952 = "/a/b/c/"
+
+const literal_9460 = "/abc/def"

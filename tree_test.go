@@ -103,14 +103,14 @@ func TestTreeAddAndGet(t *testing.T) {
 
 	routes := [...]string{
 		"/hi",
-		"/contact",
+		literal_4217,
 		"/co",
 		"/c",
 		"/a",
 		"/ab",
 		"/doc/",
-		"/doc/go_faq.html",
-		"/doc/go1.html",
+		literal_2035,
+		literal_0261,
 		"/α",
 		"/β",
 	}
@@ -122,7 +122,7 @@ func TestTreeAddAndGet(t *testing.T) {
 		{"/a", false, "/a", nil},
 		{"/", true, "", nil},
 		{"/hi", false, "/hi", nil},
-		{"/contact", false, "/contact", nil},
+		{literal_4217, false, literal_4217, nil},
 		{"/co", false, "/co", nil},
 		{"/con", true, "", nil},  // key mismatch
 		{"/cona", true, "", nil}, // key mismatch
@@ -140,59 +140,59 @@ func TestTreeWildcard(t *testing.T) {
 
 	routes := [...]string{
 		"/",
-		"/cmd/:tool/",
-		"/cmd/:tool/:sub",
-		"/cmd/whoami",
-		"/cmd/whoami/root",
-		"/cmd/whoami/root/",
-		"/src/*filepath",
-		"/search/",
-		"/search/:query",
-		"/search/gin-gonic",
-		"/search/google",
-		"/user_:name",
+		literal_0946,
+		literal_8372,
+		literal_5389,
+		literal_6049,
+		literal_4827,
+		literal_2791,
+		literal_1489,
+		literal_8590,
+		literal_8605,
+		literal_0652,
+		literal_0836,
 		"/user_:name/about",
-		"/files/:dir/*filepath",
+		literal_6470,
 		"/doc/",
-		"/doc/go_faq.html",
-		"/doc/go1.html",
+		literal_2035,
+		literal_0261,
 		"/info/:user/public",
-		"/info/:user/project/:project",
+		literal_8420,
 		"/info/:user/project/golang",
 		"/aa/*xx",
 		"/ab/*xx",
 		"/:cc",
 		"/c1/:dd/e",
 		"/c1/:dd/e1",
-		"/:cc/cc",
-		"/:cc/:dd/ee",
+		literal_2845,
+		literal_5382,
 		"/:cc/:dd/:ee/ff",
 		"/:cc/:dd/:ee/:ff/gg",
-		"/:cc/:dd/:ee/:ff/:gg/hh",
-		"/get/test/abc/",
-		"/get/:param/abc/",
-		"/something/:paramname/thirdthing",
-		"/something/secondthing/test",
-		"/get/abc",
-		"/get/:param",
-		"/get/abc/123abc",
-		"/get/abc/:param",
-		"/get/abc/123abc/xxx8",
-		"/get/abc/123abc/:param",
-		"/get/abc/123abc/xxx8/1234",
-		"/get/abc/123abc/xxx8/:param",
-		"/get/abc/123abc/xxx8/1234/ffas",
-		"/get/abc/123abc/xxx8/1234/:param",
-		"/get/abc/123abc/xxx8/1234/kkdd/12c",
-		"/get/abc/123abc/xxx8/1234/kkdd/:param",
-		"/get/abc/:param/test",
+		literal_0384,
+		literal_2645,
+		literal_0297,
+		literal_4176,
+		literal_4691,
+		literal_5986,
+		literal_0974,
+		literal_8120,
+		literal_9526,
+		literal_3065,
+		literal_3026,
+		literal_6074,
+		literal_4320,
+		literal_9802,
+		literal_0125,
+		literal_6970,
+		literal_6843,
+		literal_9516,
 		"/get/abc/123abd/:param",
 		"/get/abc/123abddd/:param",
 		"/get/abc/123/:param",
 		"/get/abc/123abg/:param",
 		"/get/abc/123abf/:param",
 		"/get/abc/123abfff/:param",
-		"/get/abc/escaped_colon/test\\:param",
+		literal_3654,
 	}
 	for _, route := range routes {
 		tree.addRoute(route, fakeHandler(route))
@@ -200,30 +200,30 @@ func TestTreeWildcard(t *testing.T) {
 
 	checkRequests(t, tree, testRequests{
 		{"/", false, "/", nil},
-		{"/cmd/test", true, "/cmd/:tool/", Params{Param{"tool", "test"}}},
-		{"/cmd/test/", false, "/cmd/:tool/", Params{Param{"tool", "test"}}},
-		{"/cmd/test/3", false, "/cmd/:tool/:sub", Params{Param{Key: "tool", Value: "test"}, Param{Key: "sub", Value: "3"}}},
-		{"/cmd/who", true, "/cmd/:tool/", Params{Param{"tool", "who"}}},
-		{"/cmd/who/", false, "/cmd/:tool/", Params{Param{"tool", "who"}}},
-		{"/cmd/whoami", false, "/cmd/whoami", nil},
-		{"/cmd/whoami/", true, "/cmd/whoami", nil},
-		{"/cmd/whoami/r", false, "/cmd/:tool/:sub", Params{Param{Key: "tool", Value: "whoami"}, Param{Key: "sub", Value: "r"}}},
-		{"/cmd/whoami/r/", true, "/cmd/:tool/:sub", Params{Param{Key: "tool", Value: "whoami"}, Param{Key: "sub", Value: "r"}}},
-		{"/cmd/whoami/root", false, "/cmd/whoami/root", nil},
-		{"/cmd/whoami/root/", false, "/cmd/whoami/root/", nil},
-		{"/src/", false, "/src/*filepath", Params{Param{Key: "filepath", Value: "/"}}},
-		{"/src/some/file.png", false, "/src/*filepath", Params{Param{Key: "filepath", Value: "/some/file.png"}}},
-		{"/search/", false, "/search/", nil},
-		{"/search/someth!ng+in+ünìcodé", false, "/search/:query", Params{Param{Key: "query", Value: "someth!ng+in+ünìcodé"}}},
+		{"/cmd/test", true, literal_0946, Params{Param{"tool", "test"}}},
+		{"/cmd/test/", false, literal_0946, Params{Param{"tool", "test"}}},
+		{"/cmd/test/3", false, literal_8372, Params{Param{Key: "tool", Value: "test"}, Param{Key: "sub", Value: "3"}}},
+		{"/cmd/who", true, literal_0946, Params{Param{"tool", "who"}}},
+		{"/cmd/who/", false, literal_0946, Params{Param{"tool", "who"}}},
+		{literal_5389, false, literal_5389, nil},
+		{"/cmd/whoami/", true, literal_5389, nil},
+		{"/cmd/whoami/r", false, literal_8372, Params{Param{Key: "tool", Value: "whoami"}, Param{Key: "sub", Value: "r"}}},
+		{"/cmd/whoami/r/", true, literal_8372, Params{Param{Key: "tool", Value: "whoami"}, Param{Key: "sub", Value: "r"}}},
+		{literal_6049, false, literal_6049, nil},
+		{literal_4827, false, literal_4827, nil},
+		{"/src/", false, literal_2791, Params{Param{Key: "filepath", Value: "/"}}},
+		{literal_3619, false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file.png"}}},
+		{literal_1489, false, literal_1489, nil},
+		{literal_7309, false, literal_8590, Params{Param{Key: "query", Value: "someth!ng+in+ünìcodé"}}},
 		{"/search/someth!ng+in+ünìcodé/", true, "", Params{Param{Key: "query", Value: "someth!ng+in+ünìcodé"}}},
-		{"/search/gin", false, "/search/:query", Params{Param{"query", "gin"}}},
-		{"/search/gin-gonic", false, "/search/gin-gonic", nil},
-		{"/search/google", false, "/search/google", nil},
-		{"/user_gopher", false, "/user_:name", Params{Param{Key: "name", Value: "gopher"}}},
+		{"/search/gin", false, literal_8590, Params{Param{"query", "gin"}}},
+		{literal_8605, false, literal_8605, nil},
+		{literal_0652, false, literal_0652, nil},
+		{"/user_gopher", false, literal_0836, Params{Param{Key: "name", Value: "gopher"}}},
 		{"/user_gopher/about", false, "/user_:name/about", Params{Param{Key: "name", Value: "gopher"}}},
-		{"/files/js/inc/framework.js", false, "/files/:dir/*filepath", Params{Param{Key: "dir", Value: "js"}, Param{Key: "filepath", Value: "/inc/framework.js"}}},
+		{"/files/js/inc/framework.js", false, literal_6470, Params{Param{Key: "dir", Value: "js"}, Param{Key: "filepath", Value: "/inc/framework.js"}}},
 		{"/info/gordon/public", false, "/info/:user/public", Params{Param{Key: "user", Value: "gordon"}}},
-		{"/info/gordon/project/go", false, "/info/:user/project/:project", Params{Param{Key: "user", Value: "gordon"}, Param{Key: "project", Value: "go"}}},
+		{"/info/gordon/project/go", false, literal_8420, Params{Param{Key: "user", Value: "gordon"}, Param{Key: "project", Value: "go"}}},
 		{"/info/gordon/project/golang", false, "/info/:user/project/golang", Params{Param{Key: "user", Value: "gordon"}}},
 		{"/aa/aa", false, "/aa/*xx", Params{Param{Key: "xx", Value: "/aa"}}},
 		{"/ab/ab", false, "/ab/*xx", Params{Param{Key: "xx", Value: "/ab"}}},
@@ -238,85 +238,85 @@ func TestTreeWildcard(t *testing.T) {
 		{"/dddaa", false, "/:cc", Params{Param{Key: "cc", Value: "dddaa"}}},
 		{"/aa", false, "/:cc", Params{Param{Key: "cc", Value: "aa"}}},
 		{"/aaa", false, "/:cc", Params{Param{Key: "cc", Value: "aaa"}}},
-		{"/aaa/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "aaa"}}},
+		{"/aaa/cc", false, literal_2845, Params{Param{Key: "cc", Value: "aaa"}}},
 		{"/ab", false, "/:cc", Params{Param{Key: "cc", Value: "ab"}}},
 		{"/abb", false, "/:cc", Params{Param{Key: "cc", Value: "abb"}}},
-		{"/abb/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "abb"}}},
+		{"/abb/cc", false, literal_2845, Params{Param{Key: "cc", Value: "abb"}}},
 		{"/allxxxx", false, "/:cc", Params{Param{Key: "cc", Value: "allxxxx"}}},
 		{"/alldd", false, "/:cc", Params{Param{Key: "cc", Value: "alldd"}}},
-		{"/all/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "all"}}},
-		{"/a/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "a"}}},
+		{"/all/cc", false, literal_2845, Params{Param{Key: "cc", Value: "all"}}},
+		{"/a/cc", false, literal_2845, Params{Param{Key: "cc", Value: "a"}}},
 		{"/c1/d/e", false, "/c1/:dd/e", Params{Param{Key: "dd", Value: "d"}}},
 		{"/c1/d/e1", false, "/c1/:dd/e1", Params{Param{Key: "dd", Value: "d"}}},
-		{"/c1/d/ee", false, "/:cc/:dd/ee", Params{Param{Key: "cc", Value: "c1"}, Param{Key: "dd", Value: "d"}}},
-		{"/cc/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "cc"}}},
-		{"/ccc/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "ccc"}}},
-		{"/deedwjfs/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "deedwjfs"}}},
-		{"/acllcc/cc", false, "/:cc/cc", Params{Param{Key: "cc", Value: "acllcc"}}},
-		{"/get/test/abc/", false, "/get/test/abc/", nil},
-		{"/get/te/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "te"}}},
-		{"/get/testaa/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "testaa"}}},
-		{"/get/xx/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "xx"}}},
-		{"/get/tt/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "tt"}}},
-		{"/get/a/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "a"}}},
-		{"/get/t/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "t"}}},
-		{"/get/aa/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "aa"}}},
-		{"/get/abas/abc/", false, "/get/:param/abc/", Params{Param{Key: "param", Value: "abas"}}},
-		{"/something/secondthing/test", false, "/something/secondthing/test", nil},
-		{"/something/abcdad/thirdthing", false, "/something/:paramname/thirdthing", Params{Param{Key: "paramname", Value: "abcdad"}}},
-		{"/something/secondthingaaaa/thirdthing", false, "/something/:paramname/thirdthing", Params{Param{Key: "paramname", Value: "secondthingaaaa"}}},
-		{"/something/se/thirdthing", false, "/something/:paramname/thirdthing", Params{Param{Key: "paramname", Value: "se"}}},
-		{"/something/s/thirdthing", false, "/something/:paramname/thirdthing", Params{Param{Key: "paramname", Value: "s"}}},
-		{"/c/d/ee", false, "/:cc/:dd/ee", Params{Param{Key: "cc", Value: "c"}, Param{Key: "dd", Value: "d"}}},
+		{"/c1/d/ee", false, literal_5382, Params{Param{Key: "cc", Value: "c1"}, Param{Key: "dd", Value: "d"}}},
+		{"/cc/cc", false, literal_2845, Params{Param{Key: "cc", Value: "cc"}}},
+		{"/ccc/cc", false, literal_2845, Params{Param{Key: "cc", Value: "ccc"}}},
+		{"/deedwjfs/cc", false, literal_2845, Params{Param{Key: "cc", Value: "deedwjfs"}}},
+		{"/acllcc/cc", false, literal_2845, Params{Param{Key: "cc", Value: "acllcc"}}},
+		{literal_2645, false, literal_2645, nil},
+		{"/get/te/abc/", false, literal_0297, Params{Param{Key: "param", Value: "te"}}},
+		{"/get/testaa/abc/", false, literal_0297, Params{Param{Key: "param", Value: "testaa"}}},
+		{"/get/xx/abc/", false, literal_0297, Params{Param{Key: "param", Value: "xx"}}},
+		{"/get/tt/abc/", false, literal_0297, Params{Param{Key: "param", Value: "tt"}}},
+		{"/get/a/abc/", false, literal_0297, Params{Param{Key: "param", Value: "a"}}},
+		{"/get/t/abc/", false, literal_0297, Params{Param{Key: "param", Value: "t"}}},
+		{"/get/aa/abc/", false, literal_0297, Params{Param{Key: "param", Value: "aa"}}},
+		{"/get/abas/abc/", false, literal_0297, Params{Param{Key: "param", Value: "abas"}}},
+		{literal_4691, false, literal_4691, nil},
+		{"/something/abcdad/thirdthing", false, literal_4176, Params{Param{Key: "paramname", Value: "abcdad"}}},
+		{"/something/secondthingaaaa/thirdthing", false, literal_4176, Params{Param{Key: "paramname", Value: "secondthingaaaa"}}},
+		{"/something/se/thirdthing", false, literal_4176, Params{Param{Key: "paramname", Value: "se"}}},
+		{"/something/s/thirdthing", false, literal_4176, Params{Param{Key: "paramname", Value: "s"}}},
+		{"/c/d/ee", false, literal_5382, Params{Param{Key: "cc", Value: "c"}, Param{Key: "dd", Value: "d"}}},
 		{"/c/d/e/ff", false, "/:cc/:dd/:ee/ff", Params{Param{Key: "cc", Value: "c"}, Param{Key: "dd", Value: "d"}, Param{Key: "ee", Value: "e"}}},
 		{"/c/d/e/f/gg", false, "/:cc/:dd/:ee/:ff/gg", Params{Param{Key: "cc", Value: "c"}, Param{Key: "dd", Value: "d"}, Param{Key: "ee", Value: "e"}, Param{Key: "ff", Value: "f"}}},
-		{"/c/d/e/f/g/hh", false, "/:cc/:dd/:ee/:ff/:gg/hh", Params{Param{Key: "cc", Value: "c"}, Param{Key: "dd", Value: "d"}, Param{Key: "ee", Value: "e"}, Param{Key: "ff", Value: "f"}, Param{Key: "gg", Value: "g"}}},
-		{"/cc/dd/ee/ff/gg/hh", false, "/:cc/:dd/:ee/:ff/:gg/hh", Params{Param{Key: "cc", Value: "cc"}, Param{Key: "dd", Value: "dd"}, Param{Key: "ee", Value: "ee"}, Param{Key: "ff", Value: "ff"}, Param{Key: "gg", Value: "gg"}}},
-		{"/get/abc", false, "/get/abc", nil},
-		{"/get/a", false, "/get/:param", Params{Param{Key: "param", Value: "a"}}},
-		{"/get/abz", false, "/get/:param", Params{Param{Key: "param", Value: "abz"}}},
-		{"/get/12a", false, "/get/:param", Params{Param{Key: "param", Value: "12a"}}},
-		{"/get/abcd", false, "/get/:param", Params{Param{Key: "param", Value: "abcd"}}},
-		{"/get/abc/123abc", false, "/get/abc/123abc", nil},
-		{"/get/abc/12", false, "/get/abc/:param", Params{Param{Key: "param", Value: "12"}}},
-		{"/get/abc/123ab", false, "/get/abc/:param", Params{Param{Key: "param", Value: "123ab"}}},
-		{"/get/abc/xyz", false, "/get/abc/:param", Params{Param{Key: "param", Value: "xyz"}}},
-		{"/get/abc/123abcddxx", false, "/get/abc/:param", Params{Param{Key: "param", Value: "123abcddxx"}}},
-		{"/get/abc/123abc/xxx8", false, "/get/abc/123abc/xxx8", nil},
-		{"/get/abc/123abc/x", false, "/get/abc/123abc/:param", Params{Param{Key: "param", Value: "x"}}},
-		{"/get/abc/123abc/xxx", false, "/get/abc/123abc/:param", Params{Param{Key: "param", Value: "xxx"}}},
-		{"/get/abc/123abc/abc", false, "/get/abc/123abc/:param", Params{Param{Key: "param", Value: "abc"}}},
-		{"/get/abc/123abc/xxx8xxas", false, "/get/abc/123abc/:param", Params{Param{Key: "param", Value: "xxx8xxas"}}},
-		{"/get/abc/123abc/xxx8/1234", false, "/get/abc/123abc/xxx8/1234", nil},
-		{"/get/abc/123abc/xxx8/1", false, "/get/abc/123abc/xxx8/:param", Params{Param{Key: "param", Value: "1"}}},
-		{"/get/abc/123abc/xxx8/123", false, "/get/abc/123abc/xxx8/:param", Params{Param{Key: "param", Value: "123"}}},
-		{"/get/abc/123abc/xxx8/78k", false, "/get/abc/123abc/xxx8/:param", Params{Param{Key: "param", Value: "78k"}}},
-		{"/get/abc/123abc/xxx8/1234xxxd", false, "/get/abc/123abc/xxx8/:param", Params{Param{Key: "param", Value: "1234xxxd"}}},
-		{"/get/abc/123abc/xxx8/1234/ffas", false, "/get/abc/123abc/xxx8/1234/ffas", nil},
-		{"/get/abc/123abc/xxx8/1234/f", false, "/get/abc/123abc/xxx8/1234/:param", Params{Param{Key: "param", Value: "f"}}},
-		{"/get/abc/123abc/xxx8/1234/ffa", false, "/get/abc/123abc/xxx8/1234/:param", Params{Param{Key: "param", Value: "ffa"}}},
-		{"/get/abc/123abc/xxx8/1234/kka", false, "/get/abc/123abc/xxx8/1234/:param", Params{Param{Key: "param", Value: "kka"}}},
-		{"/get/abc/123abc/xxx8/1234/ffas321", false, "/get/abc/123abc/xxx8/1234/:param", Params{Param{Key: "param", Value: "ffas321"}}},
-		{"/get/abc/123abc/xxx8/1234/kkdd/12c", false, "/get/abc/123abc/xxx8/1234/kkdd/12c", nil},
-		{"/get/abc/123abc/xxx8/1234/kkdd/1", false, "/get/abc/123abc/xxx8/1234/kkdd/:param", Params{Param{Key: "param", Value: "1"}}},
-		{"/get/abc/123abc/xxx8/1234/kkdd/12", false, "/get/abc/123abc/xxx8/1234/kkdd/:param", Params{Param{Key: "param", Value: "12"}}},
-		{"/get/abc/123abc/xxx8/1234/kkdd/12b", false, "/get/abc/123abc/xxx8/1234/kkdd/:param", Params{Param{Key: "param", Value: "12b"}}},
-		{"/get/abc/123abc/xxx8/1234/kkdd/34", false, "/get/abc/123abc/xxx8/1234/kkdd/:param", Params{Param{Key: "param", Value: "34"}}},
-		{"/get/abc/123abc/xxx8/1234/kkdd/12c2e3", false, "/get/abc/123abc/xxx8/1234/kkdd/:param", Params{Param{Key: "param", Value: "12c2e3"}}},
-		{"/get/abc/12/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "12"}}},
-		{"/get/abc/123abdd/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "123abdd"}}},
-		{"/get/abc/123abdddf/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "123abdddf"}}},
-		{"/get/abc/123ab/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "123ab"}}},
-		{"/get/abc/123abgg/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "123abgg"}}},
-		{"/get/abc/123abff/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "123abff"}}},
-		{"/get/abc/123abffff/test", false, "/get/abc/:param/test", Params{Param{Key: "param", Value: "123abffff"}}},
+		{"/c/d/e/f/g/hh", false, literal_0384, Params{Param{Key: "cc", Value: "c"}, Param{Key: "dd", Value: "d"}, Param{Key: "ee", Value: "e"}, Param{Key: "ff", Value: "f"}, Param{Key: "gg", Value: "g"}}},
+		{"/cc/dd/ee/ff/gg/hh", false, literal_0384, Params{Param{Key: "cc", Value: "cc"}, Param{Key: "dd", Value: "dd"}, Param{Key: "ee", Value: "ee"}, Param{Key: "ff", Value: "ff"}, Param{Key: "gg", Value: "gg"}}},
+		{literal_5986, false, literal_5986, nil},
+		{"/get/a", false, literal_0974, Params{Param{Key: "param", Value: "a"}}},
+		{"/get/abz", false, literal_0974, Params{Param{Key: "param", Value: "abz"}}},
+		{"/get/12a", false, literal_0974, Params{Param{Key: "param", Value: "12a"}}},
+		{"/get/abcd", false, literal_0974, Params{Param{Key: "param", Value: "abcd"}}},
+		{literal_8120, false, literal_8120, nil},
+		{"/get/abc/12", false, literal_9526, Params{Param{Key: "param", Value: "12"}}},
+		{"/get/abc/123ab", false, literal_9526, Params{Param{Key: "param", Value: "123ab"}}},
+		{"/get/abc/xyz", false, literal_9526, Params{Param{Key: "param", Value: "xyz"}}},
+		{"/get/abc/123abcddxx", false, literal_9526, Params{Param{Key: "param", Value: "123abcddxx"}}},
+		{literal_3065, false, literal_3065, nil},
+		{"/get/abc/123abc/x", false, literal_3026, Params{Param{Key: "param", Value: "x"}}},
+		{"/get/abc/123abc/xxx", false, literal_3026, Params{Param{Key: "param", Value: "xxx"}}},
+		{"/get/abc/123abc/abc", false, literal_3026, Params{Param{Key: "param", Value: "abc"}}},
+		{"/get/abc/123abc/xxx8xxas", false, literal_3026, Params{Param{Key: "param", Value: "xxx8xxas"}}},
+		{literal_6074, false, literal_6074, nil},
+		{"/get/abc/123abc/xxx8/1", false, literal_4320, Params{Param{Key: "param", Value: "1"}}},
+		{"/get/abc/123abc/xxx8/123", false, literal_4320, Params{Param{Key: "param", Value: "123"}}},
+		{"/get/abc/123abc/xxx8/78k", false, literal_4320, Params{Param{Key: "param", Value: "78k"}}},
+		{"/get/abc/123abc/xxx8/1234xxxd", false, literal_4320, Params{Param{Key: "param", Value: "1234xxxd"}}},
+		{literal_9802, false, literal_9802, nil},
+		{"/get/abc/123abc/xxx8/1234/f", false, literal_0125, Params{Param{Key: "param", Value: "f"}}},
+		{"/get/abc/123abc/xxx8/1234/ffa", false, literal_0125, Params{Param{Key: "param", Value: "ffa"}}},
+		{"/get/abc/123abc/xxx8/1234/kka", false, literal_0125, Params{Param{Key: "param", Value: "kka"}}},
+		{"/get/abc/123abc/xxx8/1234/ffas321", false, literal_0125, Params{Param{Key: "param", Value: "ffas321"}}},
+		{literal_6970, false, literal_6970, nil},
+		{"/get/abc/123abc/xxx8/1234/kkdd/1", false, literal_6843, Params{Param{Key: "param", Value: "1"}}},
+		{"/get/abc/123abc/xxx8/1234/kkdd/12", false, literal_6843, Params{Param{Key: "param", Value: "12"}}},
+		{"/get/abc/123abc/xxx8/1234/kkdd/12b", false, literal_6843, Params{Param{Key: "param", Value: "12b"}}},
+		{"/get/abc/123abc/xxx8/1234/kkdd/34", false, literal_6843, Params{Param{Key: "param", Value: "34"}}},
+		{"/get/abc/123abc/xxx8/1234/kkdd/12c2e3", false, literal_6843, Params{Param{Key: "param", Value: "12c2e3"}}},
+		{"/get/abc/12/test", false, literal_9516, Params{Param{Key: "param", Value: "12"}}},
+		{"/get/abc/123abdd/test", false, literal_9516, Params{Param{Key: "param", Value: "123abdd"}}},
+		{"/get/abc/123abdddf/test", false, literal_9516, Params{Param{Key: "param", Value: "123abdddf"}}},
+		{"/get/abc/123ab/test", false, literal_9516, Params{Param{Key: "param", Value: "123ab"}}},
+		{"/get/abc/123abgg/test", false, literal_9516, Params{Param{Key: "param", Value: "123abgg"}}},
+		{"/get/abc/123abff/test", false, literal_9516, Params{Param{Key: "param", Value: "123abff"}}},
+		{"/get/abc/123abffff/test", false, literal_9516, Params{Param{Key: "param", Value: "123abffff"}}},
 		{"/get/abc/123abd/test", false, "/get/abc/123abd/:param", Params{Param{Key: "param", Value: "test"}}},
 		{"/get/abc/123abddd/test", false, "/get/abc/123abddd/:param", Params{Param{Key: "param", Value: "test"}}},
 		{"/get/abc/123/test22", false, "/get/abc/123/:param", Params{Param{Key: "param", Value: "test22"}}},
 		{"/get/abc/123abg/test", false, "/get/abc/123abg/:param", Params{Param{Key: "param", Value: "test"}}},
 		{"/get/abc/123abf/testss", false, "/get/abc/123abf/:param", Params{Param{Key: "param", Value: "testss"}}},
 		{"/get/abc/123abfff/te", false, "/get/abc/123abfff/:param", Params{Param{Key: "param", Value: "te"}}},
-		{"/get/abc/escaped_colon/test\\:param", false, "/get/abc/escaped_colon/test\\:param", nil},
+		{literal_3654, false, literal_3654, nil},
 	})
 
 	checkPriorities(t, tree)
@@ -327,13 +327,13 @@ func TestUnescapeParameters(t *testing.T) {
 
 	routes := [...]string{
 		"/",
-		"/cmd/:tool/:sub",
-		"/cmd/:tool/",
-		"/src/*filepath",
-		"/search/:query",
-		"/files/:dir/*filepath",
-		"/info/:user/project/:project",
-		"/info/:user",
+		literal_8372,
+		literal_0946,
+		literal_2791,
+		literal_8590,
+		literal_6470,
+		literal_8420,
+		literal_4578,
 	}
 	for _, route := range routes {
 		tree.addRoute(route, fakeHandler(route))
@@ -342,18 +342,18 @@ func TestUnescapeParameters(t *testing.T) {
 	unescape := true
 	checkRequests(t, tree, testRequests{
 		{"/", false, "/", nil},
-		{"/cmd/test/", false, "/cmd/:tool/", Params{Param{Key: "tool", Value: "test"}}},
+		{"/cmd/test/", false, literal_0946, Params{Param{Key: "tool", Value: "test"}}},
 		{"/cmd/test", true, "", Params{Param{Key: "tool", Value: "test"}}},
-		{"/src/some/file.png", false, "/src/*filepath", Params{Param{Key: "filepath", Value: "/some/file.png"}}},
-		{"/src/some/file+test.png", false, "/src/*filepath", Params{Param{Key: "filepath", Value: "/some/file test.png"}}},
-		{"/src/some/file++++%%%%test.png", false, "/src/*filepath", Params{Param{Key: "filepath", Value: "/some/file++++%%%%test.png"}}},
-		{"/src/some/file%2Ftest.png", false, "/src/*filepath", Params{Param{Key: "filepath", Value: "/some/file/test.png"}}},
-		{"/search/someth!ng+in+ünìcodé", false, "/search/:query", Params{Param{Key: "query", Value: "someth!ng in ünìcodé"}}},
-		{"/info/gordon/project/go", false, "/info/:user/project/:project", Params{Param{Key: "user", Value: "gordon"}, Param{Key: "project", Value: "go"}}},
-		{"/info/slash%2Fgordon", false, "/info/:user", Params{Param{Key: "user", Value: "slash/gordon"}}},
-		{"/info/slash%2Fgordon/project/Project%20%231", false, "/info/:user/project/:project", Params{Param{Key: "user", Value: "slash/gordon"}, Param{Key: "project", Value: "Project #1"}}},
-		{"/info/slash%%%%", false, "/info/:user", Params{Param{Key: "user", Value: "slash%%%%"}}},
-		{"/info/slash%%%%2Fgordon/project/Project%%%%20%231", false, "/info/:user/project/:project", Params{Param{Key: "user", Value: "slash%%%%2Fgordon"}, Param{Key: "project", Value: "Project%%%%20%231"}}},
+		{literal_3619, false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file.png"}}},
+		{"/src/some/file+test.png", false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file test.png"}}},
+		{"/src/some/file++++%%%%test.png", false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file++++%%%%test.png"}}},
+		{"/src/some/file%2Ftest.png", false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file/test.png"}}},
+		{literal_7309, false, literal_8590, Params{Param{Key: "query", Value: "someth!ng in ünìcodé"}}},
+		{"/info/gordon/project/go", false, literal_8420, Params{Param{Key: "user", Value: "gordon"}, Param{Key: "project", Value: "go"}}},
+		{"/info/slash%2Fgordon", false, literal_4578, Params{Param{Key: "user", Value: "slash/gordon"}}},
+		{"/info/slash%2Fgordon/project/Project%20%231", false, literal_8420, Params{Param{Key: "user", Value: "slash/gordon"}, Param{Key: "project", Value: "Project #1"}}},
+		{"/info/slash%%%%", false, literal_4578, Params{Param{Key: "user", Value: "slash%%%%"}}},
+		{"/info/slash%%%%2Fgordon/project/Project%%%%20%231", false, literal_8420, Params{Param{Key: "user", Value: "slash%%%%2Fgordon"}, Param{Key: "project", Value: "Project%%%%20%231"}}},
 	}, unescape)
 
 	checkPriorities(t, tree)
@@ -393,8 +393,8 @@ func testRoutes(t *testing.T, routes []testRoute) {
 
 func TestTreeWildcardConflict(t *testing.T) {
 	routes := []testRoute{
-		{"/cmd/:tool/:sub", false},
-		{"/cmd/vet", false},
+		{literal_8372, false},
+		{literal_6792, false},
 		{"/foo/bar", false},
 		{"/foo/:name", false},
 		{"/foo/:names", true},
@@ -402,7 +402,7 @@ func TestTreeWildcardConflict(t *testing.T) {
 		{"/cmd/:badvar", true},
 		{"/cmd/:tool/names", false},
 		{"/cmd/:tool/:badsub/details", true},
-		{"/src/*filepath", false},
+		{literal_2791, false},
 		{"/src/:file", true},
 		{"/src/static.json", true},
 		{"/src/*filepathx", true},
@@ -412,11 +412,11 @@ func TestTreeWildcardConflict(t *testing.T) {
 		{"/src1/*filepath", true},
 		{"/src2*filepath", true},
 		{"/src2/*filepath", false},
-		{"/search/:query", false},
+		{literal_8590, false},
 		{"/search/valid", false},
-		{"/user_:name", false},
+		{literal_0836, false},
 		{"/user_x", false},
-		{"/user_:name", false},
+		{literal_0836, false},
 		{"/id:id", false},
 		{"/id/:id", false},
 		{"/static/*file", false},
@@ -437,15 +437,15 @@ func TestCatchAllAfterSlash(t *testing.T) {
 
 func TestTreeChildConflict(t *testing.T) {
 	routes := []testRoute{
-		{"/cmd/vet", false},
+		{literal_6792, false},
 		{"/cmd/:tool", false},
-		{"/cmd/:tool/:sub", false},
+		{literal_8372, false},
 		{"/cmd/:tool/misc", false},
 		{"/cmd/:tool/:othersub", true},
 		{"/src/AUTHORS", false},
-		{"/src/*filepath", true},
+		{literal_2791, true},
 		{"/user_x", false},
-		{"/user_:name", false},
+		{literal_0836, false},
 		{"/id/:id", false},
 		{"/id:id", false},
 		{"/:id", false},
@@ -460,16 +460,16 @@ func TestTreeDuplicatePath(t *testing.T) {
 	routes := [...]string{
 		"/",
 		"/doc/",
-		"/src/*filepath",
-		"/search/:query",
-		"/user_:name",
+		literal_2791,
+		literal_8590,
+		literal_0836,
 	}
 	for _, route := range routes {
 		recv := catchPanic(func() {
 			tree.addRoute(route, fakeHandler(route))
 		})
 		if recv != nil {
-			t.Fatalf("panic inserting route '%s': %v", route, recv)
+			t.Fatalf(literal_6458, route, recv)
 		}
 
 		// Add again
@@ -486,9 +486,9 @@ func TestTreeDuplicatePath(t *testing.T) {
 	checkRequests(t, tree, testRequests{
 		{"/", false, "/", nil},
 		{"/doc/", false, "/doc/", nil},
-		{"/src/some/file.png", false, "/src/*filepath", Params{Param{"filepath", "/some/file.png"}}},
-		{"/search/someth!ng+in+ünìcodé", false, "/search/:query", Params{Param{"query", "someth!ng+in+ünìcodé"}}},
-		{"/user_gopher", false, "/user_:name", Params{Param{"name", "gopher"}}},
+		{literal_3619, false, literal_2791, Params{Param{"filepath", "/some/file.png"}}},
+		{literal_7309, false, literal_8590, Params{Param{"query", "someth!ng+in+ünìcodé"}}},
+		{"/user_gopher", false, literal_0836, Params{Param{"name", "gopher"}}},
 	})
 }
 
@@ -573,9 +573,9 @@ func TestTreeTrailingSlashRedirect(t *testing.T) {
 	routes := [...]string{
 		"/hi",
 		"/b/",
-		"/search/:query",
-		"/cmd/:tool/",
-		"/src/*filepath",
+		literal_8590,
+		literal_0946,
+		literal_2791,
 		"/x",
 		"/x/y",
 		"/y/",
@@ -590,8 +590,8 @@ func TestTreeTrailingSlashRedirect(t *testing.T) {
 		"/admin/:category",
 		"/admin/:category/:page",
 		"/doc",
-		"/doc/go_faq.html",
-		"/doc/go1.html",
+		literal_2035,
+		literal_0261,
 		"/no/a",
 		"/no/b",
 		"/api/:page/:name",
@@ -609,7 +609,7 @@ func TestTreeTrailingSlashRedirect(t *testing.T) {
 			tree.addRoute(route, fakeHandler(route))
 		})
 		if recv != nil {
-			t.Fatalf("panic inserting route '%s': %v", route, recv)
+			t.Fatalf(literal_6458, route, recv)
 		}
 	}
 
@@ -617,7 +617,7 @@ func TestTreeTrailingSlashRedirect(t *testing.T) {
 		"/hi/",
 		"/b",
 		"/search/gopher/",
-		"/cmd/vet",
+		literal_6792,
 		"/src",
 		"/x/",
 		"/y",
@@ -721,9 +721,9 @@ func TestTreeFindCaseInsensitivePath(t *testing.T) {
 		"/hi",
 		"/b/",
 		"/ABC/",
-		"/search/:query",
-		"/cmd/:tool/",
-		"/src/*filepath",
+		literal_8590,
+		literal_0946,
+		literal_2791,
 		"/x",
 		"/x/y",
 		"/y/",
@@ -735,17 +735,17 @@ func TestTreeFindCaseInsensitivePath(t *testing.T) {
 		"/aa",
 		"/a/",
 		"/doc",
-		"/doc/go_faq.html",
-		"/doc/go1.html",
+		literal_2035,
+		literal_0261,
 		"/doc/go/away",
 		"/no/a",
 		"/no/b",
 		"/Π",
 		"/u/apfêl/",
-		"/u/äpfêl/",
-		"/u/öpfêl",
-		"/v/Äpfêl/",
-		"/v/Öpfêl",
+		literal_6471,
+		literal_2864,
+		literal_9028,
+		literal_2981,
 		"/w/♬",  // 3 byte
 		"/w/♭/", // 3 byte, last byte differs
 		"/w/𠜎",  // 4 byte
@@ -758,7 +758,7 @@ func TestTreeFindCaseInsensitivePath(t *testing.T) {
 			tree.addRoute(route, fakeHandler(route))
 		})
 		if recv != nil {
-			t.Fatalf("panic inserting route '%s': %v", route, recv)
+			t.Fatalf(literal_6458, route, recv)
 		}
 	}
 
@@ -831,14 +831,14 @@ func TestTreeFindCaseInsensitivePath(t *testing.T) {
 		{"/DOC/GO", "", false, true},
 		{"/π", "/Π", true, false},
 		{"/π/", "/Π", true, true},
-		{"/u/ÄPFÊL/", "/u/äpfêl/", true, false},
-		{"/u/ÄPFÊL", "/u/äpfêl/", true, true},
-		{"/u/ÖPFÊL/", "/u/öpfêl", true, true},
-		{"/u/ÖPFÊL", "/u/öpfêl", true, false},
-		{"/v/äpfêL/", "/v/Äpfêl/", true, false},
-		{"/v/äpfêL", "/v/Äpfêl/", true, true},
-		{"/v/öpfêL/", "/v/Öpfêl", true, true},
-		{"/v/öpfêL", "/v/Öpfêl", true, false},
+		{"/u/ÄPFÊL/", literal_6471, true, false},
+		{"/u/ÄPFÊL", literal_6471, true, true},
+		{"/u/ÖPFÊL/", literal_2864, true, true},
+		{"/u/ÖPFÊL", literal_2864, true, false},
+		{"/v/äpfêL/", literal_9028, true, false},
+		{"/v/äpfêL", literal_9028, true, true},
+		{"/v/öpfêL/", literal_2981, true, true},
+		{"/v/öpfêL", literal_2981, true, false},
 		{"/w/♬/", "/w/♬", true, true},
 		{"/w/♭", "/w/♭/", true, true},
 		{"/w/𠜎/", "/w/𠜎", true, true},
@@ -993,3 +993,95 @@ func TestTreeInvalidEscape(t *testing.T) {
 		}
 	}
 }
+
+const literal_4217 = "/contact"
+
+const literal_2035 = "/doc/go_faq.html"
+
+const literal_0261 = "/doc/go1.html"
+
+const literal_0946 = "/cmd/:tool/"
+
+const literal_8372 = "/cmd/:tool/:sub"
+
+const literal_5389 = "/cmd/whoami"
+
+const literal_6049 = "/cmd/whoami/root"
+
+const literal_4827 = "/cmd/whoami/root/"
+
+const literal_2791 = "/src/*filepath"
+
+const literal_1489 = "/search/"
+
+const literal_8590 = "/search/:query"
+
+const literal_8605 = "/search/gin-gonic"
+
+const literal_0652 = "/search/google"
+
+const literal_0836 = "/user_:name"
+
+const literal_6470 = "/files/:dir/*filepath"
+
+const literal_8420 = "/info/:user/project/:project"
+
+const literal_2845 = "/:cc/cc"
+
+const literal_5382 = "/:cc/:dd/ee"
+
+const literal_0384 = "/:cc/:dd/:ee/:ff/:gg/hh"
+
+const literal_2645 = "/get/test/abc/"
+
+const literal_0297 = "/get/:param/abc/"
+
+const literal_4176 = "/something/:paramname/thirdthing"
+
+const literal_4691 = "/something/secondthing/test"
+
+const literal_5986 = "/get/abc"
+
+const literal_0974 = "/get/:param"
+
+const literal_8120 = "/get/abc/123abc"
+
+const literal_9526 = "/get/abc/:param"
+
+const literal_3065 = "/get/abc/123abc/xxx8"
+
+const literal_3026 = "/get/abc/123abc/:param"
+
+const literal_6074 = "/get/abc/123abc/xxx8/1234"
+
+const literal_4320 = "/get/abc/123abc/xxx8/:param"
+
+const literal_9802 = "/get/abc/123abc/xxx8/1234/ffas"
+
+const literal_0125 = "/get/abc/123abc/xxx8/1234/:param"
+
+const literal_6970 = "/get/abc/123abc/xxx8/1234/kkdd/12c"
+
+const literal_6843 = "/get/abc/123abc/xxx8/1234/kkdd/:param"
+
+const literal_9516 = "/get/abc/:param/test"
+
+const literal_3654 = "/get/abc/escaped_colon/test\\:param"
+
+const literal_3619 = "/src/some/file.png"
+
+const literal_7309 = "/search/someth!ng+in+ünìcodé"
+
+const literal_4578 = "/info/:user"
+
+const literal_6792 = "/cmd/vet"
+
+const literal_6458 = "panic inserting route '%s': %v"
+
+const literal_6471 = "/u/äpfêl/"
+
+const literal_2864 = "/u/öpfêl"
+
+const literal_9028 = "/v/Äpfêl/"
+
+const literal_2981 = "/v/Öpfêl"

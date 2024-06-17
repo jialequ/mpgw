@@ -67,18 +67,18 @@ func TestLoadHTMLGlobDebugMode(t *testing.T) {
 		DebugMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLGlob("./testdata/template/*")
+			router.LoadHTMLGlob(literal_7814)
 		},
 	)
 	defer ts.Close()
 
-	res, err := http.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := http.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestH2c(t *testing.T) {
@@ -89,7 +89,7 @@ func TestH2c(t *testing.T) {
 	r := Default()
 	r.UseH2C = true
 	r.GET("/", func(c *Context) {
-		c.String(200, "<h1>Hello world</h1>")
+		c.String(200, literal_1752)
 	})
 	go func() {
 		err := http.Serve(ln, r.Handler())
@@ -116,7 +116,7 @@ func TestH2c(t *testing.T) {
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLGlobTestMode(t *testing.T) {
@@ -125,18 +125,18 @@ func TestLoadHTMLGlobTestMode(t *testing.T) {
 		TestMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLGlob("./testdata/template/*")
+			router.LoadHTMLGlob(literal_7814)
 		},
 	)
 	defer ts.Close()
 
-	res, err := http.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := http.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLGlobReleaseMode(t *testing.T) {
@@ -145,18 +145,18 @@ func TestLoadHTMLGlobReleaseMode(t *testing.T) {
 		ReleaseMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLGlob("./testdata/template/*")
+			router.LoadHTMLGlob(literal_7814)
 		},
 	)
 	defer ts.Close()
 
-	res, err := http.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := http.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLGlobUsingTLS(t *testing.T) {
@@ -165,7 +165,7 @@ func TestLoadHTMLGlobUsingTLS(t *testing.T) {
 		DebugMode,
 		true,
 		func(router *Engine) {
-			router.LoadHTMLGlob("./testdata/template/*")
+			router.LoadHTMLGlob(literal_7814)
 		},
 	)
 	defer ts.Close()
@@ -177,13 +177,13 @@ func TestLoadHTMLGlobUsingTLS(t *testing.T) {
 		},
 	}
 	client := &http.Client{Transport: tr}
-	res, err := client.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := client.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLGlobFromFuncMap(t *testing.T) {
@@ -192,7 +192,7 @@ func TestLoadHTMLGlobFromFuncMap(t *testing.T) {
 		DebugMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLGlob("./testdata/template/*")
+			router.LoadHTMLGlob(literal_7814)
 		},
 	)
 	defer ts.Close()
@@ -223,18 +223,18 @@ func TestLoadHTMLFilesTestMode(t *testing.T) {
 		TestMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLFiles("./testdata/template/hello.tmpl", "./testdata/template/raw.tmpl")
+			router.LoadHTMLFiles(literal_2391, literal_2659)
 		},
 	)
 	defer ts.Close()
 
-	res, err := http.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := http.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLFilesDebugMode(t *testing.T) {
@@ -243,18 +243,18 @@ func TestLoadHTMLFilesDebugMode(t *testing.T) {
 		DebugMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLFiles("./testdata/template/hello.tmpl", "./testdata/template/raw.tmpl")
+			router.LoadHTMLFiles(literal_2391, literal_2659)
 		},
 	)
 	defer ts.Close()
 
-	res, err := http.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := http.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLFilesReleaseMode(t *testing.T) {
@@ -263,18 +263,18 @@ func TestLoadHTMLFilesReleaseMode(t *testing.T) {
 		ReleaseMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLFiles("./testdata/template/hello.tmpl", "./testdata/template/raw.tmpl")
+			router.LoadHTMLFiles(literal_2391, literal_2659)
 		},
 	)
 	defer ts.Close()
 
-	res, err := http.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := http.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLFilesUsingTLS(t *testing.T) {
@@ -283,7 +283,7 @@ func TestLoadHTMLFilesUsingTLS(t *testing.T) {
 		TestMode,
 		true,
 		func(router *Engine) {
-			router.LoadHTMLFiles("./testdata/template/hello.tmpl", "./testdata/template/raw.tmpl")
+			router.LoadHTMLFiles(literal_2391, literal_2659)
 		},
 	)
 	defer ts.Close()
@@ -295,13 +295,13 @@ func TestLoadHTMLFilesUsingTLS(t *testing.T) {
 		},
 	}
 	client := &http.Client{Transport: tr}
-	res, err := client.Get(fmt.Sprintf("%s/test", ts.URL))
+	res, err := client.Get(fmt.Sprintf(literal_3960, ts.URL))
 	if err != nil {
 		t.Error(err)
 	}
 
 	resp, _ := io.ReadAll(res.Body)
-	assert.Equal(t, "<h1>Hello world</h1>", string(resp))
+	assert.Equal(t, literal_1752, string(resp))
 }
 
 func TestLoadHTMLFilesFuncMap(t *testing.T) {
@@ -310,7 +310,7 @@ func TestLoadHTMLFilesFuncMap(t *testing.T) {
 		TestMode,
 		false,
 		func(router *Engine) {
-			router.LoadHTMLFiles("./testdata/template/hello.tmpl", "./testdata/template/raw.tmpl")
+			router.LoadHTMLFiles(literal_2391, literal_2659)
 		},
 	)
 	defer ts.Close()
@@ -494,12 +494,12 @@ func TestListOfRoutes(t *testing.T) {
 	assertRoutePresent(t, list, RouteInfo{
 		Method:  "GET",
 		Path:    "/favicon.ico",
-		Handler: "^(.*/vendor/)?github.com/jialequ/mpgw.handlerTest1$",
+		Handler: literal_8237,
 	})
 	assertRoutePresent(t, list, RouteInfo{
 		Method:  "GET",
 		Path:    "/",
-		Handler: "^(.*/vendor/)?github.com/jialequ/mpgw.handlerTest1$",
+		Handler: literal_8237,
 	})
 	assertRoutePresent(t, list, RouteInfo{
 		Method:  "GET",
@@ -509,7 +509,7 @@ func TestListOfRoutes(t *testing.T) {
 	assertRoutePresent(t, list, RouteInfo{
 		Method:  "GET",
 		Path:    "/users/:id",
-		Handler: "^(.*/vendor/)?github.com/jialequ/mpgw.handlerTest1$",
+		Handler: literal_8237,
 	})
 	assertRoutePresent(t, list, RouteInfo{
 		Method:  "POST",
@@ -644,12 +644,12 @@ func TestPrepareTrustedCIRDsWith(t *testing.T) {
 	{
 		expectedTrustedCIDRs := []*net.IPNet{
 			parseCIDR("::/0"),
-			parseCIDR("192.168.0.0/16"),
+			parseCIDR(literal_8209),
 			parseCIDR("172.16.0.1/32"),
 		}
 		err := r.SetTrustedProxies([]string{
 			"::/0",
-			"192.168.0.0/16",
+			literal_8209,
 			"172.16.0.1",
 		})
 
@@ -661,7 +661,7 @@ func TestPrepareTrustedCIRDsWith(t *testing.T) {
 	{
 		err := r.SetTrustedProxies([]string{
 			"::/0",
-			"192.168.0.0/16",
+			literal_8209,
 			"172.16.0.256",
 		})
 
@@ -700,8 +700,8 @@ func handlerTest2(c *Context) {}
 
 func TestNewOptionFunc(t *testing.T) {
 	var fc = func(e *Engine) {
-		e.GET("/test1", handlerTest1)
-		e.GET("/test2", handlerTest2)
+		e.GET(literal_6187, handlerTest1)
+		e.GET(literal_6314, handlerTest2)
 
 		e.Use(func(c *Context) {
 			c.Next()
@@ -711,16 +711,16 @@ func TestNewOptionFunc(t *testing.T) {
 	r := New(fc)
 
 	routes := r.Routes()
-	assertRoutePresent(t, routes, RouteInfo{Path: "/test1", Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest1"})
-	assertRoutePresent(t, routes, RouteInfo{Path: "/test2", Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest2"})
+	assertRoutePresent(t, routes, RouteInfo{Path: literal_6187, Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest1"})
+	assertRoutePresent(t, routes, RouteInfo{Path: literal_6314, Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest2"})
 }
 
 func TestWithOptionFunc(t *testing.T) {
 	r := New()
 
 	r.With(func(e *Engine) {
-		e.GET("/test1", handlerTest1)
-		e.GET("/test2", handlerTest2)
+		e.GET(literal_6187, handlerTest1)
+		e.GET(literal_6314, handlerTest2)
 
 		e.Use(func(c *Context) {
 			c.Next()
@@ -728,8 +728,8 @@ func TestWithOptionFunc(t *testing.T) {
 	})
 
 	routes := r.Routes()
-	assertRoutePresent(t, routes, RouteInfo{Path: "/test1", Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest1"})
-	assertRoutePresent(t, routes, RouteInfo{Path: "/test2", Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest2"})
+	assertRoutePresent(t, routes, RouteInfo{Path: literal_6187, Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest1"})
+	assertRoutePresent(t, routes, RouteInfo{Path: literal_6314, Method: "GET", Handler: "github.com/jialequ/mpgw.handlerTest2"})
 }
 
 type Birthday string
@@ -754,3 +754,21 @@ func TestCustomUnmarshalStruct(t *testing.T) {
 	assert.Equal(t, 200, w.Code)
 	assert.Equal(t, `"2000/01/01"`, w.Body.String())
 }
+
+const literal_7814 = "./testdata/template/*"
+
+const literal_3960 = "%s/test"
+
+const literal_1752 = "<h1>Hello world</h1>"
+
+const literal_2391 = "./testdata/template/hello.tmpl"
+
+const literal_2659 = "./testdata/template/raw.tmpl"
+
+const literal_8237 = "^(.*/vendor/)?github.com/jialequ/mpgw.handlerTest1$"
+
+const literal_8209 = "192.168.0.0/16"
+
+const literal_6187 = "/test1"
+
+const literal_6314 = "/test2"

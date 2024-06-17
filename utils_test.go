@@ -38,9 +38,9 @@ func (t *testStruct) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 func TestWrap(t *testing.T) {
 	router := New()
 	router.POST("/path", WrapH(&testStruct{t}))
-	router.GET("/path2", WrapF(func(w http.ResponseWriter, req *http.Request) {
+	router.GET(literal_7354, WrapF(func(w http.ResponseWriter, req *http.Request) {
 		assert.Equal(t, "GET", req.Method)
-		assert.Equal(t, "/path2", req.URL.Path)
+		assert.Equal(t, literal_7354, req.URL.Path)
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprint(w, "hola!")
 	}))
@@ -49,7 +49,7 @@ func TestWrap(t *testing.T) {
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
 	assert.Equal(t, "hello", w.Body.String())
 
-	w = PerformRequest(router, "GET", "/path2")
+	w = PerformRequest(router, "GET", literal_7354)
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 	assert.Equal(t, "hola!", w.Body.String())
 }
@@ -63,7 +63,7 @@ func TestLastChar(t *testing.T) {
 func TestParseAccept(t *testing.T) {
 	parts := parseAccept("text/html , application/xhtml+xml,application/xml;q=0.9,  */* ;q=0.8")
 	assert.Len(t, parts, 4)
-	assert.Equal(t, "text/html", parts[0])
+	assert.Equal(t, literal_5068, parts[0])
 	assert.Equal(t, "application/xhtml+xml", parts[1])
 	assert.Equal(t, "application/xml", parts[2])
 	assert.Equal(t, "*/*", parts[3])
@@ -79,10 +79,10 @@ func TestChooseData(t *testing.T) {
 
 func TestFilterFlags(t *testing.T) {
 	result := filterFlags("text/html ")
-	assert.Equal(t, "text/html", result)
+	assert.Equal(t, literal_5068, result)
 
 	result = filterFlags("text/html;")
-	assert.Equal(t, "text/html", result)
+	assert.Equal(t, literal_5068, result)
 }
 
 func TestFunctionName(t *testing.T) {
@@ -148,3 +148,7 @@ func TestIsASCII(t *testing.T) {
 	assert.Equal(t, isASCII("test"), true)
 	assert.Equal(t, isASCII("🧡💛💚💙💜"), false)
 }
+
+const literal_7354 = "/path2"
+
+const literal_5068 = "text/html"

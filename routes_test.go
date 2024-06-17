@@ -146,102 +146,102 @@ func TestRouteRedirectTrailingSlash(t *testing.T) {
 	router.RedirectFixedPath = false
 	router.RedirectTrailingSlash = true
 	router.GET("/path", func(c *Context) {})
-	router.GET("/path2/", func(c *Context) {})
-	router.POST("/path3", func(c *Context) {})
-	router.PUT("/path4/", func(c *Context) {})
+	router.GET(literal_9014, func(c *Context) {})
+	router.POST(literal_2608, func(c *Context) {})
+	router.PUT(literal_0924, func(c *Context) {})
 
-	w := PerformRequest(router, http.MethodGet, "/path/")
+	w := PerformRequest(router, http.MethodGet, literal_8295)
 	assert.Equal(t, "/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2")
-	assert.Equal(t, "/path2/", w.Header().Get("Location"))
+	w = PerformRequest(router, http.MethodGet, literal_3425)
+	assert.Equal(t, literal_9014, w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
 	w = PerformRequest(router, http.MethodPost, "/path3/")
-	assert.Equal(t, "/path3", w.Header().Get("Location"))
+	assert.Equal(t, literal_2608, w.Header().Get("Location"))
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 
-	w = PerformRequest(router, http.MethodPut, "/path4")
-	assert.Equal(t, "/path4/", w.Header().Get("Location"))
+	w = PerformRequest(router, http.MethodPut, literal_3178)
+	assert.Equal(t, literal_0924, w.Header().Get("Location"))
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 
 	w = PerformRequest(router, http.MethodGet, "/path")
 	assert.Equal(t, http.StatusOK, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2/")
+	w = PerformRequest(router, http.MethodGet, literal_9014)
 	assert.Equal(t, http.StatusOK, w.Code)
 
-	w = PerformRequest(router, http.MethodPost, "/path3")
+	w = PerformRequest(router, http.MethodPost, literal_2608)
 	assert.Equal(t, http.StatusOK, w.Code)
 
-	w = PerformRequest(router, http.MethodPut, "/path4/")
+	w = PerformRequest(router, http.MethodPut, literal_0924)
 	assert.Equal(t, http.StatusOK, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2", header{Key: "X-Forwarded-Prefix", Value: "/api"})
-	assert.Equal(t, "/api/path2/", w.Header().Get("Location"))
+	w = PerformRequest(router, http.MethodGet, literal_3425, header{Key: literal_8026, Value: "/api"})
+	assert.Equal(t, literal_4706, w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2/", header{Key: "X-Forwarded-Prefix", Value: "/api/"})
+	w = PerformRequest(router, http.MethodGet, literal_9014, header{Key: literal_8026, Value: "/api/"})
 	assert.Equal(t, http.StatusOK, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "../../api#?"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "../../api#?"})
 	assert.Equal(t, "/api/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "../../api"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "../../api"})
 	assert.Equal(t, "/api/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2", header{Key: "X-Forwarded-Prefix", Value: "../../api"})
-	assert.Equal(t, "/api/path2/", w.Header().Get("Location"))
+	w = PerformRequest(router, http.MethodGet, literal_3425, header{Key: literal_8026, Value: "../../api"})
+	assert.Equal(t, literal_4706, w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2", header{Key: "X-Forwarded-Prefix", Value: "/../../api"})
-	assert.Equal(t, "/api/path2/", w.Header().Get("Location"))
+	w = PerformRequest(router, http.MethodGet, literal_3425, header{Key: literal_8026, Value: "/../../api"})
+	assert.Equal(t, literal_4706, w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "api/../../"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "api/../../"})
 	assert.Equal(t, "//path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "api/../../../"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "api/../../../"})
 	assert.Equal(t, "/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2", header{Key: "X-Forwarded-Prefix", Value: "../../gin-gonic.com"})
+	w = PerformRequest(router, http.MethodGet, literal_3425, header{Key: literal_8026, Value: "../../gin-gonic.com"})
 	assert.Equal(t, "/gin-goniccom/path2/", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2", header{Key: "X-Forwarded-Prefix", Value: "/../../gin-gonic.com"})
+	w = PerformRequest(router, http.MethodGet, literal_3425, header{Key: literal_8026, Value: "/../../gin-gonic.com"})
 	assert.Equal(t, "/gin-goniccom/path2/", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "https://gin-gonic.com/#"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "https://gin-gonic.com/#"})
 	assert.Equal(t, "https/gin-goniccom/https/gin-goniccom/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "#api"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "#api"})
 	assert.Equal(t, "api/api/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "/nor-mal/#?a=1"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "/nor-mal/#?a=1"})
 	assert.Equal(t, "/nor-mal/a1/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path/", header{Key: "X-Forwarded-Prefix", Value: "/nor-mal/%2e%2e/"})
+	w = PerformRequest(router, http.MethodGet, literal_8295, header{Key: literal_8026, Value: "/nor-mal/%2e%2e/"})
 	assert.Equal(t, "/nor-mal/2e2e/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
 	router.RedirectTrailingSlash = false
 
-	w = PerformRequest(router, http.MethodGet, "/path/")
+	w = PerformRequest(router, http.MethodGet, literal_8295)
 	assert.Equal(t, http.StatusNotFound, w.Code)
-	w = PerformRequest(router, http.MethodGet, "/path2")
+	w = PerformRequest(router, http.MethodGet, literal_3425)
 	assert.Equal(t, http.StatusNotFound, w.Code)
 	w = PerformRequest(router, http.MethodPost, "/path3/")
 	assert.Equal(t, http.StatusNotFound, w.Code)
-	w = PerformRequest(router, http.MethodPut, "/path4")
+	w = PerformRequest(router, http.MethodPut, literal_3178)
 	assert.Equal(t, http.StatusNotFound, w.Code)
 }
 
@@ -259,15 +259,15 @@ func TestRouteRedirectFixedPath(t *testing.T) {
 	assert.Equal(t, "/path", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodGet, "/path2")
+	w = PerformRequest(router, http.MethodGet, literal_3425)
 	assert.Equal(t, "/Path2", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusMovedPermanently, w.Code)
 
-	w = PerformRequest(router, http.MethodPost, "/path3")
+	w = PerformRequest(router, http.MethodPost, literal_2608)
 	assert.Equal(t, "/PATH3", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 
-	w = PerformRequest(router, http.MethodPost, "/path4")
+	w = PerformRequest(router, http.MethodPost, literal_3178)
 	assert.Equal(t, "/Path4/", w.Header().Get("Location"))
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 }
@@ -278,7 +278,7 @@ func TestRouteParamsByName(t *testing.T) {
 	lastName := ""
 	wild := ""
 	router := New()
-	router.GET("/test/:name/:last_name/*wild", func(c *Context) {
+	router.GET(literal_1278, func(c *Context) {
 		name = c.Params.ByName("name")
 		lastName = c.Params.ByName("last_name")
 		var ok bool
@@ -296,7 +296,7 @@ func TestRouteParamsByName(t *testing.T) {
 		assert.False(t, ok)
 	})
 
-	w := PerformRequest(router, http.MethodGet, "/test/john/smith/is/super/great")
+	w := PerformRequest(router, http.MethodGet, literal_7982)
 
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, "john", name)
@@ -311,7 +311,7 @@ func TestRouteParamsByNameWithExtraSlash(t *testing.T) {
 	wild := ""
 	router := New()
 	router.RemoveExtraSlash = true
-	router.GET("/test/:name/:last_name/*wild", func(c *Context) {
+	router.GET(literal_1278, func(c *Context) {
 		name = c.Params.ByName("name")
 		lastName = c.Params.ByName("last_name")
 		var ok bool
@@ -346,11 +346,11 @@ func TestRouteParamsNotEmpty(t *testing.T) {
 	wild := ""
 	router := New()
 
-	w := PerformRequest(router, http.MethodGet, "/test/john/smith/is/super/great")
+	w := PerformRequest(router, http.MethodGet, literal_7982)
 
 	assert.Equal(t, http.StatusNotFound, w.Code)
 
-	router.GET("/test/:name/:last_name/*wild", func(c *Context) {
+	router.GET(literal_1278, func(c *Context) {
 		name = c.Params.ByName("name")
 		lastName = c.Params.ByName("last_name")
 		var ok bool
@@ -368,7 +368,7 @@ func TestRouteParamsNotEmpty(t *testing.T) {
 		assert.False(t, ok)
 	})
 
-	w = PerformRequest(router, http.MethodGet, "/test/john/smith/is/super/great")
+	w = PerformRequest(router, http.MethodGet, literal_7982)
 
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, "john", name)
@@ -385,7 +385,7 @@ func TestRouteStaticFile(t *testing.T) {
 		t.Error(err)
 	}
 	defer os.Remove(f.Name())
-	_, err = f.WriteString("Gin Web Framework")
+	_, err = f.WriteString(literal_1374)
 	assert.NoError(t, err)
 	f.Close()
 
@@ -394,18 +394,18 @@ func TestRouteStaticFile(t *testing.T) {
 	// SETUP gin
 	router := New()
 	router.Static("/using_static", dir)
-	router.StaticFile("/result", f.Name())
+	router.StaticFile(literal_8306, f.Name())
 
-	w := PerformRequest(router, http.MethodGet, "/using_static/"+filename)
-	w2 := PerformRequest(router, http.MethodGet, "/result")
+	w := PerformRequest(router, http.MethodGet, literal_8269+filename)
+	w2 := PerformRequest(router, http.MethodGet, literal_8306)
 
 	assert.Equal(t, w, w2)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "Gin Web Framework", w.Body.String())
-	assert.Equal(t, "text/plain; charset=utf-8", w.Header().Get("Content-Type"))
+	assert.Equal(t, literal_1374, w.Body.String())
+	assert.Equal(t, "text/plain; charset=utf-8", w.Header().Get(literal_8391))
 
-	w3 := PerformRequest(router, http.MethodHead, "/using_static/"+filename)
-	w4 := PerformRequest(router, http.MethodHead, "/result")
+	w3 := PerformRequest(router, http.MethodHead, literal_8269+filename)
+	w4 := PerformRequest(router, http.MethodHead, literal_8306)
 
 	assert.Equal(t, w3, w4)
 	assert.Equal(t, http.StatusOK, w3.Code)
@@ -420,7 +420,7 @@ func TestRouteStaticFileFS(t *testing.T) {
 		t.Error(err)
 	}
 	defer os.Remove(f.Name())
-	_, err = f.WriteString("Gin Web Framework")
+	_, err = f.WriteString(literal_1374)
 	assert.NoError(t, err)
 	f.Close()
 
@@ -428,18 +428,18 @@ func TestRouteStaticFileFS(t *testing.T) {
 	// SETUP gin
 	router := New()
 	router.Static("/using_static", dir)
-	router.StaticFileFS("/result_fs", filename, Dir(dir, false))
+	router.StaticFileFS(literal_0241, filename, Dir(dir, false))
 
-	w := PerformRequest(router, http.MethodGet, "/using_static/"+filename)
-	w2 := PerformRequest(router, http.MethodGet, "/result_fs")
+	w := PerformRequest(router, http.MethodGet, literal_8269+filename)
+	w2 := PerformRequest(router, http.MethodGet, literal_0241)
 
 	assert.Equal(t, w, w2)
 	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Equal(t, "Gin Web Framework", w.Body.String())
-	assert.Equal(t, "text/plain; charset=utf-8", w.Header().Get("Content-Type"))
+	assert.Equal(t, literal_1374, w.Body.String())
+	assert.Equal(t, "text/plain; charset=utf-8", w.Header().Get(literal_8391))
 
-	w3 := PerformRequest(router, http.MethodHead, "/using_static/"+filename)
-	w4 := PerformRequest(router, http.MethodHead, "/result_fs")
+	w3 := PerformRequest(router, http.MethodHead, literal_8269+filename)
+	w4 := PerformRequest(router, http.MethodHead, literal_0241)
 
 	assert.Equal(t, w3, w4)
 	assert.Equal(t, http.StatusOK, w3.Code)
@@ -454,7 +454,7 @@ func TestRouteStaticListingDir(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Contains(t, w.Body.String(), "gin.go")
-	assert.Equal(t, "text/html; charset=utf-8", w.Header().Get("Content-Type"))
+	assert.Equal(t, "text/html; charset=utf-8", w.Header().Get(literal_8391))
 }
 
 // TestHandleHeadToDir - ensure the root/sub dir handles properly
@@ -471,8 +471,8 @@ func TestRouteStaticNoListing(t *testing.T) {
 func TestRouterMiddlewareAndStatic(t *testing.T) {
 	router := New()
 	static := router.Group("/", func(c *Context) {
-		c.Writer.Header().Add("Last-Modified", "Mon, 02 Jan 2006 15:04:05 MST")
-		c.Writer.Header().Add("Expires", "Mon, 02 Jan 2006 15:04:05 MST")
+		c.Writer.Header().Add("Last-Modified", literal_3295)
+		c.Writer.Header().Add("Expires", literal_3295)
 		c.Writer.Header().Add("X-GIN", "Gin Framework")
 	})
 	static.Static("/", "./")
@@ -483,9 +483,9 @@ func TestRouterMiddlewareAndStatic(t *testing.T) {
 	assert.Contains(t, w.Body.String(), "package gin")
 	// Content-Type='text/plain; charset=utf-8' when go version <= 1.16,
 	// else, Content-Type='text/x-go; charset=utf-8'
-	assert.NotEqual(t, "", w.Header().Get("Content-Type"))
-	assert.NotEqual(t, w.Header().Get("Last-Modified"), "Mon, 02 Jan 2006 15:04:05 MST")
-	assert.Equal(t, "Mon, 02 Jan 2006 15:04:05 MST", w.Header().Get("Expires"))
+	assert.NotEqual(t, "", w.Header().Get(literal_8391))
+	assert.NotEqual(t, w.Header().Get("Last-Modified"), literal_3295)
+	assert.Equal(t, literal_3295, w.Header().Get("Expires"))
 	assert.Equal(t, "Gin Framework", w.Header().Get("x-GIN"))
 }
 
@@ -509,8 +509,8 @@ func TestRouteNotAllowedEnabled2(t *testing.T) {
 	router.HandleMethodNotAllowed = true
 	// add one methodTree to trees
 	router.addRoute(http.MethodPost, "/", HandlersChain{func(_ *Context) {}})
-	router.GET("/path2", func(c *Context) {})
-	w := PerformRequest(router, http.MethodPost, "/path2")
+	router.GET(literal_3425, func(c *Context) {})
+	w := PerformRequest(router, http.MethodPost, literal_3425)
 	assert.Equal(t, http.StatusMethodNotAllowed, w.Code)
 }
 
@@ -576,7 +576,7 @@ func TestRouterNotFound(t *testing.T) {
 		code     int
 		location string
 	}{
-		{"/path/", http.StatusMovedPermanently, "/path"},   // TSR -/
+		{literal_8295, http.StatusMovedPermanently, "/path"},   // TSR -/
 		{"/dir", http.StatusMovedPermanently, "/dir/"},     // TSR +/
 		{"/PATH", http.StatusMovedPermanently, "/path"},    // Fixed Case
 		{"/DIR/", http.StatusMovedPermanently, "/dir/"},    // Fixed Case
@@ -605,7 +605,7 @@ func TestRouterNotFound(t *testing.T) {
 
 	// Test other method than GET (want 307 instead of 301)
 	router.PATCH("/path", func(c *Context) {})
-	w = PerformRequest(router, http.MethodPatch, "/path/")
+	w = PerformRequest(router, http.MethodPatch, literal_8295)
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 	assert.Equal(t, "map[Location:[/path]]", fmt.Sprint(w.Header()))
 
@@ -635,14 +635,14 @@ func TestRouterStaticFSNotFound(t *testing.T) {
 	router := New()
 	router.StaticFS("/", http.FileSystem(http.Dir("/thisreallydoesntexist/")))
 	router.NoRoute(func(c *Context) {
-		c.String(http.StatusNotFound, "non existent")
+		c.String(http.StatusNotFound, literal_1384)
 	})
 
-	w := PerformRequest(router, http.MethodGet, "/nonexistent")
-	assert.Equal(t, "non existent", w.Body.String())
+	w := PerformRequest(router, http.MethodGet, literal_2906)
+	assert.Equal(t, literal_1384, w.Body.String())
 
-	w = PerformRequest(router, http.MethodHead, "/nonexistent")
-	assert.Equal(t, "non existent", w.Body.String())
+	w = PerformRequest(router, http.MethodHead, literal_2906)
+	assert.Equal(t, literal_1384, w.Body.String())
 }
 
 func TestRouterStaticFSFileNotFound(t *testing.T) {
@@ -651,7 +651,7 @@ func TestRouterStaticFSFileNotFound(t *testing.T) {
 	router.StaticFS("/", http.FileSystem(http.Dir(".")))
 
 	assert.NotPanics(t, func() {
-		PerformRequest(router, http.MethodGet, "/nonexistent")
+		PerformRequest(router, http.MethodGet, literal_2906)
 	})
 }
 
@@ -668,11 +668,11 @@ func TestMiddlewareCalledOnceByRouterStaticFSNotFound(t *testing.T) {
 	router.StaticFS("/", http.FileSystem(http.Dir("/thisreallydoesntexist/")))
 
 	// First access
-	PerformRequest(router, http.MethodGet, "/nonexistent")
+	PerformRequest(router, http.MethodGet, literal_2906)
 	assert.Equal(t, 1, middlewareCalledNum)
 
 	// Second access
-	PerformRequest(router, http.MethodHead, "/nonexistent")
+	PerformRequest(router, http.MethodHead, literal_2906)
 	assert.Equal(t, 2, middlewareCalledNum)
 }
 
@@ -788,3 +788,39 @@ func TestEngineHandleMethodNotAllowedCornerCase(t *testing.T) {
 	w := PerformRequest(r, "GET", "/base/v1/user/groups")
 	assert.Equal(t, http.StatusNotFound, w.Code)
 }
+
+const literal_9014 = "/path2/"
+
+const literal_2608 = "/path3"
+
+const literal_0924 = "/path4/"
+
+const literal_8295 = "/path/"
+
+const literal_3425 = "/path2"
+
+const literal_3178 = "/path4"
+
+const literal_8026 = "X-Forwarded-Prefix"
+
+const literal_4706 = "/api/path2/"
+
+const literal_1278 = "/test/:name/:last_name/*wild"
+
+const literal_7982 = "/test/john/smith/is/super/great"
+
+const literal_1374 = "Gin Web Framework"
+
+const literal_8306 = "/result"
+
+const literal_8269 = "/using_static/"
+
+const literal_8391 = "Content-Type"
+
+const literal_0241 = "/result_fs"
+
+const literal_3295 = "Mon, 02 Jan 2006 15:04:05 MST"
+
+const literal_1384 = "non existent"
+
+const literal_2906 = "/nonexistent"

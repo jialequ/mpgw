@@ -25,7 +25,7 @@ import (
 
 // params[0]=url example:http://127.0.0.1:8080/index (cannot be empty)
 // params[1]=response status (custom compare status) default:"200 OK"
-// params[2]=response body (custom compare content)  default:"it worked"
+// params[2]=response body (custom compare content)  default:literal_7812
 func testRequest(t *testing.T, params ...string) {
 
 	if len(params) == 0 {
@@ -51,14 +51,14 @@ func testRequest(t *testing.T, params ...string) {
 		responseStatus = params[1]
 	}
 
-	var responseBody = "it worked"
+	var responseBody = literal_7812
 	if len(params) > 2 && params[2] != "" {
 		responseBody = params[2]
 	}
 
 	assert.Equal(t, responseStatus, resp.Status, "should get a "+responseStatus)
 	if responseStatus == "200 OK" {
-		assert.Equal(t, responseBody, string(body), "resp body should match")
+		assert.Equal(t, responseBody, string(body), literal_3982)
 	}
 }
 
@@ -66,7 +66,7 @@ func TestRunEmpty(t *testing.T) {
 	os.Setenv("PORT", "")
 	router := New()
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.NoError(t, router.Run())
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -99,7 +99,7 @@ func TestBadTrustedCIDRsForRunUnix(t *testing.T) {
 	defer os.Remove(unixTestSocket)
 
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.Error(t, router.RunUnix(unixTestSocket))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -119,7 +119,7 @@ func TestBadTrustedCIDRsForRunFd(t *testing.T) {
 	assert.NoError(t, err)
 
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.Error(t, router.RunFd(int(socketFile.Fd())))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -136,7 +136,7 @@ func TestBadTrustedCIDRsForRunListener(t *testing.T) {
 	listener, err := net.ListenTCP("tcp", addr)
 	assert.NoError(t, err)
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.Error(t, router.RunListener(listener))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -148,23 +148,23 @@ func TestBadTrustedCIDRsForRunTLS(t *testing.T) {
 	os.Setenv("PORT", "")
 	router := New()
 	router.TrustedProxies = []string{"hello/world"}
-	assert.Error(t, router.RunTLS(":8080", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+	assert.Error(t, router.RunTLS(":8080", literal_8762, literal_9713))
 }
 */
 
 func TestRunTLS(t *testing.T) {
 	router := New()
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 
-		assert.NoError(t, router.RunTLS(":8443", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+		assert.NoError(t, router.RunTLS(":8443", literal_8762, literal_9713))
 	}()
 
 	// have to wait for the goroutine to start and run the server
 	// otherwise the main thread will complete
 	time.Sleep(5 * time.Millisecond)
 
-	assert.Error(t, router.RunTLS(":8443", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+	assert.Error(t, router.RunTLS(":8443", literal_8762, literal_9713))
 	testRequest(t, "https://localhost:8443/example")
 }
 
@@ -191,17 +191,17 @@ func TestPusher(t *testing.T) {
 				err := pusher.Push("/assets/app.js", nil)
 				assert.NoError(t, err)
 			}
-			c.String(http.StatusOK, "it worked")
+			c.String(http.StatusOK, literal_7812)
 		})
 
-		assert.NoError(t, router.RunTLS(":8449", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+		assert.NoError(t, router.RunTLS(":8449", literal_8762, literal_9713))
 	}()
 
 	// have to wait for the goroutine to start and run the server
 	// otherwise the main thread will complete
 	time.Sleep(5 * time.Millisecond)
 
-	assert.Error(t, router.RunTLS(":8449", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+	assert.Error(t, router.RunTLS(":8449", literal_8762, literal_9713))
 	testRequest(t, "https://localhost:8449/pusher")
 }
 
@@ -209,7 +209,7 @@ func TestRunEmptyWithEnv(t *testing.T) {
 	os.Setenv("PORT", "3123")
 	router := New()
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.NoError(t, router.Run())
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -230,7 +230,7 @@ func TestRunTooMuchParams(t *testing.T) {
 func TestRunWithPort(t *testing.T) {
 	router := New()
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.NoError(t, router.Run(":5150"))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -249,7 +249,7 @@ func TestUnixSocket(t *testing.T) {
 	defer os.Remove(unixTestSocket)
 
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.NoError(t, router.RunUnix(unixTestSocket))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -259,14 +259,14 @@ func TestUnixSocket(t *testing.T) {
 	c, err := net.Dial("unix", unixTestSocket)
 	assert.NoError(t, err)
 
-	fmt.Fprint(c, "GET /example HTTP/1.0\r\n\r\n")
+	fmt.Fprint(c, literal_0968)
 	scanner := bufio.NewScanner(c)
 	var response string
 	for scanner.Scan() {
 		response += scanner.Text()
 	}
-	assert.Contains(t, response, "HTTP/1.0 200", "should get a 200")
-	assert.Contains(t, response, "it worked", "resp body should match")
+	assert.Contains(t, response, literal_0634, literal_6914)
+	assert.Contains(t, response, literal_7812, literal_3982)
 }
 
 func TestBadUnixSocket(t *testing.T) {
@@ -277,16 +277,16 @@ func TestBadUnixSocket(t *testing.T) {
 func TestRunQUIC(t *testing.T) {
 	router := New()
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 
-		assert.NoError(t, router.RunQUIC(":8443", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+		assert.NoError(t, router.RunQUIC(":8443", literal_8762, literal_9713))
 	}()
 
 	// have to wait for the goroutine to start and run the server
 	// otherwise the main thread will complete
 	time.Sleep(5 * time.Millisecond)
 
-	assert.Error(t, router.RunQUIC(":8443", "./testdata/certificate/cert.pem", "./testdata/certificate/key.pem"))
+	assert.Error(t, router.RunQUIC(":8443", literal_8762, literal_9713))
 	testRequest(t, "https://localhost:8443/example")
 }
 
@@ -310,7 +310,7 @@ func TestFileDescriptor(t *testing.T) {
 	}
 
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.NoError(t, router.RunFd(int(socketFile.Fd())))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -320,14 +320,14 @@ func TestFileDescriptor(t *testing.T) {
 	c, err := net.Dial("tcp", listener.Addr().String())
 	assert.NoError(t, err)
 
-	fmt.Fprintf(c, "GET /example HTTP/1.0\r\n\r\n")
+	fmt.Fprintf(c, literal_0968)
 	scanner := bufio.NewScanner(c)
 	var response string
 	for scanner.Scan() {
 		response += scanner.Text()
 	}
-	assert.Contains(t, response, "HTTP/1.0 200", "should get a 200")
-	assert.Contains(t, response, "it worked", "resp body should match")
+	assert.Contains(t, response, literal_0634, literal_6914)
+	assert.Contains(t, response, literal_7812, literal_3982)
 }
 
 func TestBadFileDescriptor(t *testing.T) {
@@ -342,7 +342,7 @@ func TestListener(t *testing.T) {
 	listener, err := net.ListenTCP("tcp", addr)
 	assert.NoError(t, err)
 	go func() {
-		router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+		router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 		assert.NoError(t, router.RunListener(listener))
 	}()
 	// have to wait for the goroutine to start and run the server
@@ -352,14 +352,14 @@ func TestListener(t *testing.T) {
 	c, err := net.Dial("tcp", listener.Addr().String())
 	assert.NoError(t, err)
 
-	fmt.Fprintf(c, "GET /example HTTP/1.0\r\n\r\n")
+	fmt.Fprintf(c, literal_0968)
 	scanner := bufio.NewScanner(c)
 	var response string
 	for scanner.Scan() {
 		response += scanner.Text()
 	}
-	assert.Contains(t, response, "HTTP/1.0 200", "should get a 200")
-	assert.Contains(t, response, "it worked", "resp body should match")
+	assert.Contains(t, response, literal_0634, literal_6914)
+	assert.Contains(t, response, literal_7812, literal_3982)
 }
 
 func TestBadListener(t *testing.T) {
@@ -374,21 +374,21 @@ func TestBadListener(t *testing.T) {
 
 func TestWithHttptestWithAutoSelectedPort(t *testing.T) {
 	router := New()
-	router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+	router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 
 	ts := httptest.NewServer(router)
 	defer ts.Close()
 
-	testRequest(t, ts.URL+"/example")
+	testRequest(t, ts.URL+literal_3274)
 }
 
 func TestConcurrentHandleContext(t *testing.T) {
 	router := New()
 	router.GET("/", func(c *Context) {
-		c.Request.URL.Path = "/example"
+		c.Request.URL.Path = literal_3274
 		router.HandleContext(c)
 	})
-	router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+	router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 
 	var wg sync.WaitGroup
 	iterations := 200
@@ -404,7 +404,7 @@ func TestConcurrentHandleContext(t *testing.T) {
 
 // func TestWithHttptestWithSpecifiedPort(t *testing.T) {
 // 	router := New()
-// 	router.GET("/example", func(c *Context) { c.String(http.StatusOK, "it worked") })
+// 	router.GET(literal_3274, func(c *Context) { c.String(http.StatusOK, literal_7812) })
 
 // 	l, _ := net.Listen("tcp", ":8033")
 // 	ts := httptest.Server{
@@ -424,154 +424,154 @@ func testGetRequestHandler(t *testing.T, h http.Handler, url string) {
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, req)
 
-	assert.Equal(t, "it worked", w.Body.String(), "resp body should match")
-	assert.Equal(t, 200, w.Code, "should get a 200")
+	assert.Equal(t, literal_7812, w.Body.String(), literal_3982)
+	assert.Equal(t, 200, w.Code, literal_6914)
 }
 
 func TestTreeRunDynamicRouting(t *testing.T) {
 	router := New()
-	router.GET("/aa/*xx", func(c *Context) { c.String(http.StatusOK, "/aa/*xx") })
-	router.GET("/ab/*xx", func(c *Context) { c.String(http.StatusOK, "/ab/*xx") })
+	router.GET(literal_6410, func(c *Context) { c.String(http.StatusOK, literal_6410) })
+	router.GET(literal_7534, func(c *Context) { c.String(http.StatusOK, literal_7534) })
 	router.GET("/", func(c *Context) { c.String(http.StatusOK, "home") })
 	router.GET("/:cc", func(c *Context) { c.String(http.StatusOK, "/:cc") })
-	router.GET("/c1/:dd/e", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/e") })
-	router.GET("/c1/:dd/e1", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/e1") })
+	router.GET(literal_5123, func(c *Context) { c.String(http.StatusOK, literal_5123) })
+	router.GET(literal_4685, func(c *Context) { c.String(http.StatusOK, literal_4685) })
 	router.GET("/c1/:dd/f1", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/f1") })
 	router.GET("/c1/:dd/f2", func(c *Context) { c.String(http.StatusOK, "/c1/:dd/f2") })
-	router.GET("/:cc/cc", func(c *Context) { c.String(http.StatusOK, "/:cc/cc") })
-	router.GET("/:cc/:dd/ee", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/ee") })
-	router.GET("/:cc/:dd/f", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/f") })
-	router.GET("/:cc/:dd/:ee/ff", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/:ee/ff") })
-	router.GET("/:cc/:dd/:ee/:ff/gg", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/:ee/:ff/gg") })
-	router.GET("/:cc/:dd/:ee/:ff/:gg/hh", func(c *Context) { c.String(http.StatusOK, "/:cc/:dd/:ee/:ff/:gg/hh") })
-	router.GET("/get/test/abc/", func(c *Context) { c.String(http.StatusOK, "/get/test/abc/") })
-	router.GET("/get/:param/abc/", func(c *Context) { c.String(http.StatusOK, "/get/:param/abc/") })
-	router.GET("/something/:paramname/thirdthing", func(c *Context) { c.String(http.StatusOK, "/something/:paramname/thirdthing") })
-	router.GET("/something/secondthing/test", func(c *Context) { c.String(http.StatusOK, "/something/secondthing/test") })
-	router.GET("/get/abc", func(c *Context) { c.String(http.StatusOK, "/get/abc") })
-	router.GET("/get/:param", func(c *Context) { c.String(http.StatusOK, "/get/:param") })
-	router.GET("/get/abc/123abc", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc") })
-	router.GET("/get/abc/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/:param") })
-	router.GET("/get/abc/123abc/xxx8", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8") })
-	router.GET("/get/abc/123abc/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/:param") })
-	router.GET("/get/abc/123abc/xxx8/1234", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234") })
-	router.GET("/get/abc/123abc/xxx8/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/:param") })
-	router.GET("/get/abc/123abc/xxx8/1234/ffas", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/ffas") })
-	router.GET("/get/abc/123abc/xxx8/1234/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/:param") })
-	router.GET("/get/abc/123abc/xxx8/1234/kkdd/12c", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/kkdd/12c") })
-	router.GET("/get/abc/123abc/xxx8/1234/kkdd/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abc/xxx8/1234/kkdd/:param") })
-	router.GET("/get/abc/:param/test", func(c *Context) { c.String(http.StatusOK, "/get/abc/:param/test") })
-	router.GET("/get/abc/123abd/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abd/:param") })
-	router.GET("/get/abc/123abddd/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abddd/:param") })
-	router.GET("/get/abc/123/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123/:param") })
-	router.GET("/get/abc/123abg/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abg/:param") })
-	router.GET("/get/abc/123abf/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abf/:param") })
-	router.GET("/get/abc/123abfff/:param", func(c *Context) { c.String(http.StatusOK, "/get/abc/123abfff/:param") })
+	router.GET(literal_5423, func(c *Context) { c.String(http.StatusOK, literal_5423) })
+	router.GET(literal_9834, func(c *Context) { c.String(http.StatusOK, literal_9834) })
+	router.GET(literal_28450, func(c *Context) { c.String(http.StatusOK, literal_28450) })
+	router.GET(literal_4351, func(c *Context) { c.String(http.StatusOK, literal_4351) })
+	router.GET(literal_0629, func(c *Context) { c.String(http.StatusOK, literal_0629) })
+	router.GET(literal_6203, func(c *Context) { c.String(http.StatusOK, literal_6203) })
+	router.GET(literal_0839, func(c *Context) { c.String(http.StatusOK, literal_0839) })
+	router.GET(literal_5286, func(c *Context) { c.String(http.StatusOK, literal_5286) })
+	router.GET(literal_1728, func(c *Context) { c.String(http.StatusOK, literal_1728) })
+	router.GET(literal_8924, func(c *Context) { c.String(http.StatusOK, literal_8924) })
+	router.GET(literal_2708, func(c *Context) { c.String(http.StatusOK, literal_2708) })
+	router.GET(literal_1235, func(c *Context) { c.String(http.StatusOK, literal_1235) })
+	router.GET(literal_2158, func(c *Context) { c.String(http.StatusOK, literal_2158) })
+	router.GET(literal_7609, func(c *Context) { c.String(http.StatusOK, literal_7609) })
+	router.GET(literal_2451, func(c *Context) { c.String(http.StatusOK, literal_2451) })
+	router.GET(literal_9168, func(c *Context) { c.String(http.StatusOK, literal_9168) })
+	router.GET(literal_1089, func(c *Context) { c.String(http.StatusOK, literal_1089) })
+	router.GET(literal_2471, func(c *Context) { c.String(http.StatusOK, literal_2471) })
+	router.GET(literal_0271, func(c *Context) { c.String(http.StatusOK, literal_0271) })
+	router.GET(literal_6743, func(c *Context) { c.String(http.StatusOK, literal_6743) })
+	router.GET(literal_7405, func(c *Context) { c.String(http.StatusOK, literal_7405) })
+	router.GET(literal_3928, func(c *Context) { c.String(http.StatusOK, literal_3928) })
+	router.GET(literal_5719, func(c *Context) { c.String(http.StatusOK, literal_5719) })
+	router.GET(literal_9425, func(c *Context) { c.String(http.StatusOK, literal_9425) })
+	router.GET(literal_4860, func(c *Context) { c.String(http.StatusOK, literal_4860) })
+	router.GET(literal_7139, func(c *Context) { c.String(http.StatusOK, literal_7139) })
+	router.GET(literal_1954, func(c *Context) { c.String(http.StatusOK, literal_1954) })
+	router.GET(literal_3095, func(c *Context) { c.String(http.StatusOK, literal_3095) })
+	router.GET(literal_8617, func(c *Context) { c.String(http.StatusOK, literal_8617) })
 
 	ts := httptest.NewServer(router)
 	defer ts.Close()
 
 	testRequest(t, ts.URL+"/", "", "home")
-	testRequest(t, ts.URL+"/aa/aa", "", "/aa/*xx")
-	testRequest(t, ts.URL+"/ab/ab", "", "/ab/*xx")
+	testRequest(t, ts.URL+"/aa/aa", "", literal_6410)
+	testRequest(t, ts.URL+"/ab/ab", "", literal_7534)
 	testRequest(t, ts.URL+"/all", "", "/:cc")
-	testRequest(t, ts.URL+"/all/cc", "", "/:cc/cc")
-	testRequest(t, ts.URL+"/a/cc", "", "/:cc/cc")
-	testRequest(t, ts.URL+"/c1/d/e", "", "/c1/:dd/e")
-	testRequest(t, ts.URL+"/c1/d/e1", "", "/c1/:dd/e1")
-	testRequest(t, ts.URL+"/c1/d/ee", "", "/:cc/:dd/ee")
-	testRequest(t, ts.URL+"/c1/d/f", "", "/:cc/:dd/f")
-	testRequest(t, ts.URL+"/c/d/ee", "", "/:cc/:dd/ee")
-	testRequest(t, ts.URL+"/c/d/e/ff", "", "/:cc/:dd/:ee/ff")
-	testRequest(t, ts.URL+"/c/d/e/f/gg", "", "/:cc/:dd/:ee/:ff/gg")
-	testRequest(t, ts.URL+"/c/d/e/f/g/hh", "", "/:cc/:dd/:ee/:ff/:gg/hh")
-	testRequest(t, ts.URL+"/cc/dd/ee/ff/gg/hh", "", "/:cc/:dd/:ee/:ff/:gg/hh")
+	testRequest(t, ts.URL+"/all/cc", "", literal_5423)
+	testRequest(t, ts.URL+"/a/cc", "", literal_5423)
+	testRequest(t, ts.URL+"/c1/d/e", "", literal_5123)
+	testRequest(t, ts.URL+"/c1/d/e1", "", literal_4685)
+	testRequest(t, ts.URL+"/c1/d/ee", "", literal_9834)
+	testRequest(t, ts.URL+"/c1/d/f", "", literal_28450)
+	testRequest(t, ts.URL+"/c/d/ee", "", literal_9834)
+	testRequest(t, ts.URL+"/c/d/e/ff", "", literal_4351)
+	testRequest(t, ts.URL+"/c/d/e/f/gg", "", literal_0629)
+	testRequest(t, ts.URL+"/c/d/e/f/g/hh", "", literal_6203)
+	testRequest(t, ts.URL+"/cc/dd/ee/ff/gg/hh", "", literal_6203)
 	testRequest(t, ts.URL+"/a", "", "/:cc")
 	testRequest(t, ts.URL+"/d", "", "/:cc")
 	testRequest(t, ts.URL+"/ad", "", "/:cc")
 	testRequest(t, ts.URL+"/dd", "", "/:cc")
 	testRequest(t, ts.URL+"/aa", "", "/:cc")
 	testRequest(t, ts.URL+"/aaa", "", "/:cc")
-	testRequest(t, ts.URL+"/aaa/cc", "", "/:cc/cc")
+	testRequest(t, ts.URL+"/aaa/cc", "", literal_5423)
 	testRequest(t, ts.URL+"/ab", "", "/:cc")
 	testRequest(t, ts.URL+"/abb", "", "/:cc")
-	testRequest(t, ts.URL+"/abb/cc", "", "/:cc/cc")
+	testRequest(t, ts.URL+"/abb/cc", "", literal_5423)
 	testRequest(t, ts.URL+"/dddaa", "", "/:cc")
 	testRequest(t, ts.URL+"/allxxxx", "", "/:cc")
 	testRequest(t, ts.URL+"/alldd", "", "/:cc")
-	testRequest(t, ts.URL+"/cc/cc", "", "/:cc/cc")
-	testRequest(t, ts.URL+"/ccc/cc", "", "/:cc/cc")
-	testRequest(t, ts.URL+"/deedwjfs/cc", "", "/:cc/cc")
-	testRequest(t, ts.URL+"/acllcc/cc", "", "/:cc/cc")
-	testRequest(t, ts.URL+"/get/test/abc/", "", "/get/test/abc/")
-	testRequest(t, ts.URL+"/get/testaa/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/te/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/xx/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/tt/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/a/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/t/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/aa/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/get/abas/abc/", "", "/get/:param/abc/")
-	testRequest(t, ts.URL+"/something/secondthing/test", "", "/something/secondthing/test")
-	testRequest(t, ts.URL+"/something/secondthingaaaa/thirdthing", "", "/something/:paramname/thirdthing")
-	testRequest(t, ts.URL+"/something/abcdad/thirdthing", "", "/something/:paramname/thirdthing")
-	testRequest(t, ts.URL+"/something/se/thirdthing", "", "/something/:paramname/thirdthing")
-	testRequest(t, ts.URL+"/something/s/thirdthing", "", "/something/:paramname/thirdthing")
-	testRequest(t, ts.URL+"/something/secondthing/thirdthing", "", "/something/:paramname/thirdthing")
-	testRequest(t, ts.URL+"/get/abc", "", "/get/abc")
-	testRequest(t, ts.URL+"/get/a", "", "/get/:param")
-	testRequest(t, ts.URL+"/get/abz", "", "/get/:param")
-	testRequest(t, ts.URL+"/get/12a", "", "/get/:param")
-	testRequest(t, ts.URL+"/get/abcd", "", "/get/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc", "", "/get/abc/123abc")
-	testRequest(t, ts.URL+"/get/abc/12", "", "/get/abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123ab", "", "/get/abc/:param")
-	testRequest(t, ts.URL+"/get/abc/xyz", "", "/get/abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123abcddxx", "", "/get/abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8", "", "/get/abc/123abc/xxx8")
-	testRequest(t, ts.URL+"/get/abc/123abc/x", "", "/get/abc/123abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx", "", "/get/abc/123abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/abc", "", "/get/abc/123abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8xxas", "", "/get/abc/123abc/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234", "", "/get/abc/123abc/xxx8/1234")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1", "", "/get/abc/123abc/xxx8/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/123", "", "/get/abc/123abc/xxx8/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/78k", "", "/get/abc/123abc/xxx8/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234xxxd", "", "/get/abc/123abc/xxx8/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/ffas", "", "/get/abc/123abc/xxx8/1234/ffas")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/f", "", "/get/abc/123abc/xxx8/1234/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/ffa", "", "/get/abc/123abc/xxx8/1234/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kka", "", "/get/abc/123abc/xxx8/1234/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/ffas321", "", "/get/abc/123abc/xxx8/1234/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12c", "", "/get/abc/123abc/xxx8/1234/kkdd/12c")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/1", "", "/get/abc/123abc/xxx8/1234/kkdd/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12", "", "/get/abc/123abc/xxx8/1234/kkdd/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12b", "", "/get/abc/123abc/xxx8/1234/kkdd/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/34", "", "/get/abc/123abc/xxx8/1234/kkdd/:param")
-	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12c2e3", "", "/get/abc/123abc/xxx8/1234/kkdd/:param")
-	testRequest(t, ts.URL+"/get/abc/12/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123abdd/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123abdddf/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123ab/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123abgg/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123abff/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123abffff/test", "", "/get/abc/:param/test")
-	testRequest(t, ts.URL+"/get/abc/123abd/test", "", "/get/abc/123abd/:param")
-	testRequest(t, ts.URL+"/get/abc/123abddd/test", "", "/get/abc/123abddd/:param")
-	testRequest(t, ts.URL+"/get/abc/123/test22", "", "/get/abc/123/:param")
-	testRequest(t, ts.URL+"/get/abc/123abg/test", "", "/get/abc/123abg/:param")
-	testRequest(t, ts.URL+"/get/abc/123abf/testss", "", "/get/abc/123abf/:param")
-	testRequest(t, ts.URL+"/get/abc/123abfff/te", "", "/get/abc/123abfff/:param")
+	testRequest(t, ts.URL+"/cc/cc", "", literal_5423)
+	testRequest(t, ts.URL+"/ccc/cc", "", literal_5423)
+	testRequest(t, ts.URL+"/deedwjfs/cc", "", literal_5423)
+	testRequest(t, ts.URL+"/acllcc/cc", "", literal_5423)
+	testRequest(t, ts.URL+literal_0839, "", literal_0839)
+	testRequest(t, ts.URL+"/get/testaa/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/te/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/xx/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/tt/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/a/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/t/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/aa/abc/", "", literal_5286)
+	testRequest(t, ts.URL+"/get/abas/abc/", "", literal_5286)
+	testRequest(t, ts.URL+literal_8924, "", literal_8924)
+	testRequest(t, ts.URL+"/something/secondthingaaaa/thirdthing", "", literal_1728)
+	testRequest(t, ts.URL+"/something/abcdad/thirdthing", "", literal_1728)
+	testRequest(t, ts.URL+"/something/se/thirdthing", "", literal_1728)
+	testRequest(t, ts.URL+"/something/s/thirdthing", "", literal_1728)
+	testRequest(t, ts.URL+"/something/secondthing/thirdthing", "", literal_1728)
+	testRequest(t, ts.URL+literal_2708, "", literal_2708)
+	testRequest(t, ts.URL+"/get/a", "", literal_1235)
+	testRequest(t, ts.URL+"/get/abz", "", literal_1235)
+	testRequest(t, ts.URL+"/get/12a", "", literal_1235)
+	testRequest(t, ts.URL+"/get/abcd", "", literal_1235)
+	testRequest(t, ts.URL+literal_2158, "", literal_2158)
+	testRequest(t, ts.URL+"/get/abc/12", "", literal_7609)
+	testRequest(t, ts.URL+"/get/abc/123ab", "", literal_7609)
+	testRequest(t, ts.URL+"/get/abc/xyz", "", literal_7609)
+	testRequest(t, ts.URL+"/get/abc/123abcddxx", "", literal_7609)
+	testRequest(t, ts.URL+literal_2451, "", literal_2451)
+	testRequest(t, ts.URL+"/get/abc/123abc/x", "", literal_9168)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx", "", literal_9168)
+	testRequest(t, ts.URL+"/get/abc/123abc/abc", "", literal_9168)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8xxas", "", literal_9168)
+	testRequest(t, ts.URL+literal_1089, "", literal_1089)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1", "", literal_2471)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/123", "", literal_2471)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/78k", "", literal_2471)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234xxxd", "", literal_2471)
+	testRequest(t, ts.URL+literal_0271, "", literal_0271)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/f", "", literal_6743)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/ffa", "", literal_6743)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kka", "", literal_6743)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/ffas321", "", literal_6743)
+	testRequest(t, ts.URL+literal_7405, "", literal_7405)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/1", "", literal_3928)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12", "", literal_3928)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12b", "", literal_3928)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/34", "", literal_3928)
+	testRequest(t, ts.URL+"/get/abc/123abc/xxx8/1234/kkdd/12c2e3", "", literal_3928)
+	testRequest(t, ts.URL+"/get/abc/12/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123abdd/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123abdddf/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123ab/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123abgg/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123abff/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123abffff/test", "", literal_5719)
+	testRequest(t, ts.URL+"/get/abc/123abd/test", "", literal_9425)
+	testRequest(t, ts.URL+"/get/abc/123abddd/test", "", literal_4860)
+	testRequest(t, ts.URL+"/get/abc/123/test22", "", literal_7139)
+	testRequest(t, ts.URL+"/get/abc/123abg/test", "", literal_1954)
+	testRequest(t, ts.URL+"/get/abc/123abf/testss", "", literal_3095)
+	testRequest(t, ts.URL+"/get/abc/123abfff/te", "", literal_8617)
 	// 404 not found
-	testRequest(t, ts.URL+"/c/d/e", "404 Not Found")
-	testRequest(t, ts.URL+"/c/d/e1", "404 Not Found")
-	testRequest(t, ts.URL+"/c/d/eee", "404 Not Found")
-	testRequest(t, ts.URL+"/c1/d/eee", "404 Not Found")
-	testRequest(t, ts.URL+"/c1/d/e2", "404 Not Found")
-	testRequest(t, ts.URL+"/cc/dd/ee/ff/gg/hh1", "404 Not Found")
-	testRequest(t, ts.URL+"/a/dd", "404 Not Found")
-	testRequest(t, ts.URL+"/addr/dd/aa", "404 Not Found")
-	testRequest(t, ts.URL+"/something/secondthing/121", "404 Not Found")
+	testRequest(t, ts.URL+"/c/d/e", literal_9815)
+	testRequest(t, ts.URL+"/c/d/e1", literal_9815)
+	testRequest(t, ts.URL+"/c/d/eee", literal_9815)
+	testRequest(t, ts.URL+"/c1/d/eee", literal_9815)
+	testRequest(t, ts.URL+"/c1/d/e2", literal_9815)
+	testRequest(t, ts.URL+"/cc/dd/ee/ff/gg/hh1", literal_9815)
+	testRequest(t, ts.URL+"/a/dd", literal_9815)
+	testRequest(t, ts.URL+"/addr/dd/aa", literal_9815)
+	testRequest(t, ts.URL+"/something/secondthing/121", literal_9815)
 }
 
 func isWindows() bool {
@@ -584,8 +584,8 @@ func TestEscapedColon(t *testing.T) {
 		router.GET(u, func(c *Context) { c.String(http.StatusOK, u) })
 	}
 	f("/r/r\\:r")
-	f("/r/r:r")
-	f("/r/r/:r")
+	f(literal_6310)
+	f(literal_2638)
 	f("/r/r/\\:r")
 	f("/r/r/r\\:r")
 	assert.Panics(t, func() {
@@ -596,9 +596,97 @@ func TestEscapedColon(t *testing.T) {
 	ts := httptest.NewServer(router)
 	defer ts.Close()
 
-	testRequest(t, ts.URL+"/r/r123", "", "/r/r:r")
-	testRequest(t, ts.URL+"/r/r:r", "", "/r/r\\:r")
-	testRequest(t, ts.URL+"/r/r/r123", "", "/r/r/:r")
-	testRequest(t, ts.URL+"/r/r/:r", "", "/r/r/\\:r")
+	testRequest(t, ts.URL+"/r/r123", "", literal_6310)
+	testRequest(t, ts.URL+literal_6310, "", "/r/r\\:r")
+	testRequest(t, ts.URL+"/r/r/r123", "", literal_2638)
+	testRequest(t, ts.URL+literal_2638, "", "/r/r/\\:r")
 	testRequest(t, ts.URL+"/r/r/r:r", "", "/r/r/r\\:r")
 }
+
+const literal_7812 = "it worked"
+
+const literal_3982 = "resp body should match"
+
+const literal_3274 = "/example"
+
+const literal_8762 = "./testdata/certificate/cert.pem"
+
+const literal_9713 = "./testdata/certificate/key.pem"
+
+const literal_0968 = "GET /example HTTP/1.0\r\n\r\n"
+
+const literal_0634 = "HTTP/1.0 200"
+
+const literal_6914 = "should get a 200"
+
+const literal_6410 = "/aa/*xx"
+
+const literal_7534 = "/ab/*xx"
+
+const literal_5123 = "/c1/:dd/e"
+
+const literal_4685 = "/c1/:dd/e1"
+
+const literal_5423 = "/:cc/cc"
+
+const literal_9834 = "/:cc/:dd/ee"
+
+const literal_28450 = "/:cc/:dd/f"
+
+const literal_4351 = "/:cc/:dd/:ee/ff"
+
+const literal_0629 = "/:cc/:dd/:ee/:ff/gg"
+
+const literal_6203 = "/:cc/:dd/:ee/:ff/:gg/hh"
+
+const literal_0839 = "/get/test/abc/"
+
+const literal_5286 = "/get/:param/abc/"
+
+const literal_1728 = "/something/:paramname/thirdthing"
+
+const literal_8924 = "/something/secondthing/test"
+
+const literal_2708 = "/get/abc"
+
+const literal_1235 = "/get/:param"
+
+const literal_2158 = "/get/abc/123abc"
+
+const literal_7609 = "/get/abc/:param"
+
+const literal_2451 = "/get/abc/123abc/xxx8"
+
+const literal_9168 = "/get/abc/123abc/:param"
+
+const literal_1089 = "/get/abc/123abc/xxx8/1234"
+
+const literal_2471 = "/get/abc/123abc/xxx8/:param"
+
+const literal_0271 = "/get/abc/123abc/xxx8/1234/ffas"
+
+const literal_6743 = "/get/abc/123abc/xxx8/1234/:param"
+
+const literal_7405 = "/get/abc/123abc/xxx8/1234/kkdd/12c"
+
+const literal_3928 = "/get/abc/123abc/xxx8/1234/kkdd/:param"
+
+const literal_5719 = "/get/abc/:param/test"
+
+const literal_9425 = "/get/abc/123abd/:param"
+
+const literal_4860 = "/get/abc/123abddd/:param"
+
+const literal_7139 = "/get/abc/123/:param"
+
+const literal_1954 = "/get/abc/123abg/:param"
+
+const literal_3095 = "/get/abc/123abf/:param"
+
+const literal_8617 = "/get/abc/123abfff/:param"
+
+const literal_9815 = "404 Not Found"
+
+const literal_6310 = "/r/r:r"
+
+const literal_2638 = "/r/r/:r"

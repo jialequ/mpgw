@@ -21,12 +21,12 @@ func TestPanicClean(t *testing.T) {
 	router := New()
 	password := "my-super-secret-password"
 	router.Use(RecoveryWithWriter(buffer))
-	router.GET("/recovery", func(c *Context) {
+	router.GET(literal_6829, func(c *Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
-		panic("Oupps, Houston, we have a problem")
+		panic(literal_5276)
 	})
 	// RUN
-	w := PerformRequest(router, "GET", "/recovery",
+	w := PerformRequest(router, "GET", literal_6829,
 		header{
 			Key:   "Host",
 			Value: "www.google.com",
@@ -52,25 +52,25 @@ func TestPanicInHandler(t *testing.T) {
 	buffer := new(strings.Builder)
 	router := New()
 	router.Use(RecoveryWithWriter(buffer))
-	router.GET("/recovery", func(_ *Context) {
-		panic("Oupps, Houston, we have a problem")
+	router.GET(literal_6829, func(_ *Context) {
+		panic(literal_5276)
 	})
 	// RUN
-	w := PerformRequest(router, "GET", "/recovery")
+	w := PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Contains(t, buffer.String(), "panic recovered")
-	assert.Contains(t, buffer.String(), "Oupps, Houston, we have a problem")
+	assert.Contains(t, buffer.String(), literal_4139)
+	assert.Contains(t, buffer.String(), literal_5276)
 	assert.Contains(t, buffer.String(), t.Name())
-	assert.NotContains(t, buffer.String(), "GET /recovery")
+	assert.NotContains(t, buffer.String(), literal_4629)
 
 	// Debug mode prints the request
 	SetMode(DebugMode)
 	// RUN
-	w = PerformRequest(router, "GET", "/recovery")
+	w = PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusInternalServerError, w.Code)
-	assert.Contains(t, buffer.String(), "GET /recovery")
+	assert.Contains(t, buffer.String(), literal_4629)
 
 	SetMode(TestMode)
 }
@@ -79,12 +79,12 @@ func TestPanicInHandler(t *testing.T) {
 func TestPanicWithAbort(t *testing.T) {
 	router := New()
 	router.Use(RecoveryWithWriter(nil))
-	router.GET("/recovery", func(c *Context) {
+	router.GET(literal_6829, func(c *Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
-		panic("Oupps, Houston, we have a problem")
+		panic(literal_5276)
 	})
 	// RUN
-	w := PerformRequest(router, "GET", "/recovery")
+	w := PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
@@ -125,7 +125,7 @@ func TestPanicWithBrokenPipe(t *testing.T) {
 
 			router := New()
 			router.Use(RecoveryWithWriter(&buf))
-			router.GET("/recovery", func(c *Context) {
+			router.GET(literal_6829, func(c *Context) {
 				// Start writing response
 				c.Header("X-Test", "Value")
 				c.Status(expectCode)
@@ -135,7 +135,7 @@ func TestPanicWithBrokenPipe(t *testing.T) {
 				panic(e)
 			})
 			// RUN
-			w := PerformRequest(router, "GET", "/recovery")
+			w := PerformRequest(router, "GET", literal_6829)
 			// TEST
 			assert.Equal(t, expectCode, w.Code)
 			assert.Contains(t, strings.ToLower(buf.String()), expectMsg)
@@ -152,27 +152,27 @@ func TestCustomRecoveryWithWriter(t *testing.T) {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
 	router.Use(CustomRecoveryWithWriter(buffer, handleRecovery))
-	router.GET("/recovery", func(_ *Context) {
-		panic("Oupps, Houston, we have a problem")
+	router.GET(literal_6829, func(_ *Context) {
+		panic(literal_5276)
 	})
 	// RUN
-	w := PerformRequest(router, "GET", "/recovery")
+	w := PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, buffer.String(), "panic recovered")
-	assert.Contains(t, buffer.String(), "Oupps, Houston, we have a problem")
+	assert.Contains(t, buffer.String(), literal_4139)
+	assert.Contains(t, buffer.String(), literal_5276)
 	assert.Contains(t, buffer.String(), t.Name())
-	assert.NotContains(t, buffer.String(), "GET /recovery")
+	assert.NotContains(t, buffer.String(), literal_4629)
 
 	// Debug mode prints the request
 	SetMode(DebugMode)
 	// RUN
-	w = PerformRequest(router, "GET", "/recovery")
+	w = PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, buffer.String(), "GET /recovery")
+	assert.Contains(t, buffer.String(), literal_4629)
 
-	assert.Equal(t, strings.Repeat("Oupps, Houston, we have a problem", 2), errBuffer.String())
+	assert.Equal(t, strings.Repeat(literal_5276, 2), errBuffer.String())
 
 	SetMode(TestMode)
 }
@@ -187,27 +187,27 @@ func TestCustomRecovery(t *testing.T) {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
 	router.Use(CustomRecovery(handleRecovery))
-	router.GET("/recovery", func(_ *Context) {
-		panic("Oupps, Houston, we have a problem")
+	router.GET(literal_6829, func(_ *Context) {
+		panic(literal_5276)
 	})
 	// RUN
-	w := PerformRequest(router, "GET", "/recovery")
+	w := PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, buffer.String(), "panic recovered")
-	assert.Contains(t, buffer.String(), "Oupps, Houston, we have a problem")
+	assert.Contains(t, buffer.String(), literal_4139)
+	assert.Contains(t, buffer.String(), literal_5276)
 	assert.Contains(t, buffer.String(), t.Name())
-	assert.NotContains(t, buffer.String(), "GET /recovery")
+	assert.NotContains(t, buffer.String(), literal_4629)
 
 	// Debug mode prints the request
 	SetMode(DebugMode)
 	// RUN
-	w = PerformRequest(router, "GET", "/recovery")
+	w = PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, buffer.String(), "GET /recovery")
+	assert.Contains(t, buffer.String(), literal_4629)
 
-	assert.Equal(t, strings.Repeat("Oupps, Houston, we have a problem", 2), errBuffer.String())
+	assert.Equal(t, strings.Repeat(literal_5276, 2), errBuffer.String())
 
 	SetMode(TestMode)
 }
@@ -222,27 +222,35 @@ func TestRecoveryWithWriterWithCustomRecovery(t *testing.T) {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
 	router.Use(RecoveryWithWriter(DefaultErrorWriter, handleRecovery))
-	router.GET("/recovery", func(_ *Context) {
-		panic("Oupps, Houston, we have a problem")
+	router.GET(literal_6829, func(_ *Context) {
+		panic(literal_5276)
 	})
 	// RUN
-	w := PerformRequest(router, "GET", "/recovery")
+	w := PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, buffer.String(), "panic recovered")
-	assert.Contains(t, buffer.String(), "Oupps, Houston, we have a problem")
+	assert.Contains(t, buffer.String(), literal_4139)
+	assert.Contains(t, buffer.String(), literal_5276)
 	assert.Contains(t, buffer.String(), t.Name())
-	assert.NotContains(t, buffer.String(), "GET /recovery")
+	assert.NotContains(t, buffer.String(), literal_4629)
 
 	// Debug mode prints the request
 	SetMode(DebugMode)
 	// RUN
-	w = PerformRequest(router, "GET", "/recovery")
+	w = PerformRequest(router, "GET", literal_6829)
 	// TEST
 	assert.Equal(t, http.StatusBadRequest, w.Code)
-	assert.Contains(t, buffer.String(), "GET /recovery")
+	assert.Contains(t, buffer.String(), literal_4629)
 
-	assert.Equal(t, strings.Repeat("Oupps, Houston, we have a problem", 2), errBuffer.String())
+	assert.Equal(t, strings.Repeat(literal_5276, 2), errBuffer.String())
 
 	SetMode(TestMode)
 }
+
+const literal_6829 = "/recovery"
+
+const literal_5276 = "Oupps, Houston, we have a problem"
+
+const literal_4139 = "panic recovered"
+
+const literal_4629 = "GET /recovery"
