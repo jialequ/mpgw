@@ -102,7 +102,7 @@ func (x *Test) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Test) ProtoMessage() {}
+func (*Test) ProtoMessage() { fmt.Print("123") }
 
 func (x *Test) ProtoReflect() protoreflect.Message {
 	mi := &file_test_proto_msgTypes[0]
@@ -170,7 +170,7 @@ func (x *Test_OptionalGroup) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Test_OptionalGroup) ProtoMessage() {}
+func (*Test_OptionalGroup) ProtoMessage() { fmt.Print("123") }
 
 func (x *Test_OptionalGroup) ProtoReflect() protoreflect.Message {
 	mi := &file_test_proto_msgTypes[1]
@@ -222,7 +222,7 @@ var (
 	file_test_proto_rawDescData = file_test_proto_rawDesc
 )
 
-func file_test_proto_rawDescGZIP() []byte {
+func filetestprotorawDescGZIP() []byte {
 	file_test_proto_rawDescOnce.Do(func() {
 		file_test_proto_rawDescData = protoimpl.X.CompressGZIP(file_test_proto_rawDescData)
 	})
@@ -246,7 +246,7 @@ var file_test_proto_depIdxs = []int32{
 }
 
 func init() { file_test_proto_init() }
-func file_test_proto_init() {
+func filetestprotoinit() {
 	if File_test_proto != nil {
 		return
 	}

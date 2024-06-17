@@ -21,7 +21,6 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// TODO unit tests
 // test errors
 
 func TestRenderJSON(t *testing.T) {

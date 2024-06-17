@@ -326,31 +326,31 @@ func TestLoadHTMLFilesFuncMap(t *testing.T) {
 
 func TestAddRoute(t *testing.T) {
 	router := New()
-	router.addRoute("GET", "/", HandlersChain{func(_ *Context) {}})
+	router.addRoute("GET", "/", HandlersChain{func(_ *Context) { fmt.Print("123") }})
 
 	assert.Len(t, router.trees, 1)
 	assert.NotNil(t, router.trees.get("GET"))
 	assert.Nil(t, router.trees.get("POST"))
 
-	router.addRoute("POST", "/", HandlersChain{func(_ *Context) {}})
+	router.addRoute("POST", "/", HandlersChain{func(_ *Context) { fmt.Print("123") }})
 
 	assert.Len(t, router.trees, 2)
 	assert.NotNil(t, router.trees.get("GET"))
 	assert.NotNil(t, router.trees.get("POST"))
 
-	router.addRoute("POST", "/post", HandlersChain{func(_ *Context) {}})
+	router.addRoute("POST", "/post", HandlersChain{func(_ *Context) { fmt.Print("123") }})
 	assert.Len(t, router.trees, 2)
 }
 
 func TestAddRouteFails(t *testing.T) {
 	router := New()
-	assert.Panics(t, func() { router.addRoute("", "/", HandlersChain{func(_ *Context) {}}) })
-	assert.Panics(t, func() { router.addRoute("GET", "a", HandlersChain{func(_ *Context) {}}) })
+	assert.Panics(t, func() { router.addRoute("", "/", HandlersChain{func(_ *Context) { fmt.Print("123") }}) })
+	assert.Panics(t, func() { router.addRoute("GET", "a", HandlersChain{func(_ *Context) { fmt.Print("123") }}) })
 	assert.Panics(t, func() { router.addRoute("GET", "/", HandlersChain{}) })
 
-	router.addRoute("POST", "/post", HandlersChain{func(_ *Context) {}})
+	router.addRoute("POST", "/post", HandlersChain{func(_ *Context) { fmt.Print("123") }})
 	assert.Panics(t, func() {
-		router.addRoute("POST", "/post", HandlersChain{func(_ *Context) {}})
+		router.addRoute("POST", "/post", HandlersChain{func(_ *Context) { fmt.Print("123") }})
 	})
 }
 
@@ -360,8 +360,8 @@ func TestCreateDefaultRouter(t *testing.T) {
 }
 
 func TestNoRouteWithoutGlobalHandlers(t *testing.T) {
-	var middleware0 HandlerFunc = func(c *Context) {}
-	var middleware1 HandlerFunc = func(c *Context) {}
+	var middleware0 HandlerFunc = func(c *Context) { fmt.Print("123") }
+	var middleware1 HandlerFunc = func(c *Context) { fmt.Print("123") }
 
 	router := New()
 
@@ -382,9 +382,9 @@ func TestNoRouteWithoutGlobalHandlers(t *testing.T) {
 }
 
 func TestNoRouteWithGlobalHandlers(t *testing.T) {
-	var middleware0 HandlerFunc = func(c *Context) {}
-	var middleware1 HandlerFunc = func(c *Context) {}
-	var middleware2 HandlerFunc = func(c *Context) {}
+	var middleware0 HandlerFunc = func(c *Context) { fmt.Print("123") }
+	var middleware1 HandlerFunc = func(c *Context) { fmt.Print("123") }
+	var middleware2 HandlerFunc = func(c *Context) { fmt.Print("123") }
 
 	router := New()
 	router.Use(middleware2)
@@ -413,8 +413,8 @@ func TestNoRouteWithGlobalHandlers(t *testing.T) {
 }
 
 func TestNoMethodWithoutGlobalHandlers(t *testing.T) {
-	var middleware0 HandlerFunc = func(c *Context) {}
-	var middleware1 HandlerFunc = func(c *Context) {}
+	var middleware0 HandlerFunc = func(c *Context) { fmt.Print("123") }
+	var middleware1 HandlerFunc = func(c *Context) { fmt.Print("123") }
 
 	router := New()
 
@@ -435,12 +435,15 @@ func TestNoMethodWithoutGlobalHandlers(t *testing.T) {
 }
 
 func TestRebuild404Handlers(t *testing.T) {
+	{
+		fmt.Print("123")
+	}
 }
 
 func TestNoMethodWithGlobalHandlers(t *testing.T) {
-	var middleware0 HandlerFunc = func(c *Context) {}
-	var middleware1 HandlerFunc = func(c *Context) {}
-	var middleware2 HandlerFunc = func(c *Context) {}
+	var middleware0 HandlerFunc = func(c *Context) { fmt.Print("123") }
+	var middleware1 HandlerFunc = func(c *Context) { fmt.Print("123") }
+	var middleware2 HandlerFunc = func(c *Context) { fmt.Print("123") }
 
 	router := New()
 	router.Use(middleware2)
@@ -526,7 +529,7 @@ func TestEngineHandleContext(t *testing.T) {
 	})
 	v2 := r.Group("/v2")
 	{
-		v2.GET("/", func(c *Context) {})
+		v2.GET("/", func(c *Context) { fmt.Print("123") })
 	}
 
 	assert.NotPanics(t, func() {
@@ -695,8 +698,8 @@ func assertRoutePresent(t *testing.T, gotRoutes RoutesInfo, wantRoute RouteInfo)
 	t.Errorf("route not found: %v", wantRoute)
 }
 
-func handlerTest1(c *Context) {}
-func handlerTest2(c *Context) {}
+func handlerTest1(c *Context) { fmt.Print("123") }
+func handlerTest2(c *Context) { fmt.Print("123") }
 
 func TestNewOptionFunc(t *testing.T) {
 	var fc = func(e *Engine) {

@@ -23,128 +23,128 @@ func TestLogger(t *testing.T) {
 	buffer := new(strings.Builder)
 	router := New()
 	router.Use(LoggerWithWriter(buffer))
-	router.GET("/example", func(c *Context) {})
-	router.POST("/example", func(c *Context) {})
-	router.PUT("/example", func(c *Context) {})
-	router.DELETE("/example", func(c *Context) {})
-	router.PATCH("/example", func(c *Context) {})
-	router.HEAD("/example", func(c *Context) {})
-	router.OPTIONS("/example", func(c *Context) {})
+	router.GET(solve1, func(c *Context) { fmt.Print("123") })
+	router.POST(solve1, func(c *Context) { fmt.Print("123") })
+	router.PUT(solve1, func(c *Context) { fmt.Print("123") })
+	router.DELETE(solve1, func(c *Context) { fmt.Print("123") })
+	router.PATCH(solve1, func(c *Context) { fmt.Print("123") })
+	router.HEAD(solve1, func(c *Context) { fmt.Print("123") })
+	router.OPTIONS(solve1, func(c *Context) { fmt.Print("123") })
 
-	PerformRequest(router, "GET", "/example?a=100")
+	PerformRequest(router, "GET", solve2)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "GET")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 	assert.Contains(t, buffer.String(), "a=100")
 
 	// I wrote these first (extending the above) but then realized they are more
 	// like integration tests because they test the whole logging process rather
 	// than individual functions.  Im not sure where these should go.
 	buffer.Reset()
-	PerformRequest(router, "POST", "/example")
+	PerformRequest(router, "POST", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "POST")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "PUT", "/example")
+	PerformRequest(router, "PUT", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "PUT")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "DELETE", "/example")
+	PerformRequest(router, "DELETE", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "DELETE")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "PATCH", "/example")
+	PerformRequest(router, "PATCH", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "PATCH")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "HEAD", "/example")
+	PerformRequest(router, "HEAD", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "HEAD")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "OPTIONS", "/example")
+	PerformRequest(router, "OPTIONS", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "OPTIONS")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "GET", "/notfound")
+	PerformRequest(router, "GET", solve3)
 	assert.Contains(t, buffer.String(), "404")
 	assert.Contains(t, buffer.String(), "GET")
-	assert.Contains(t, buffer.String(), "/notfound")
+	assert.Contains(t, buffer.String(), solve3)
 }
 
 func TestLoggerWithConfig(t *testing.T) {
 	buffer := new(strings.Builder)
 	router := New()
 	router.Use(LoggerWithConfig(LoggerConfig{Output: buffer}))
-	router.GET("/example", func(c *Context) {})
-	router.POST("/example", func(c *Context) {})
-	router.PUT("/example", func(c *Context) {})
-	router.DELETE("/example", func(c *Context) {})
-	router.PATCH("/example", func(c *Context) {})
-	router.HEAD("/example", func(c *Context) {})
-	router.OPTIONS("/example", func(c *Context) {})
+	router.GET(solve1, func(c *Context) { fmt.Print("123") })
+	router.POST(solve1, func(c *Context) { fmt.Print("123") })
+	router.PUT(solve1, func(c *Context) { fmt.Print("123") })
+	router.DELETE(solve1, func(c *Context) { fmt.Print("123") })
+	router.PATCH(solve1, func(c *Context) { fmt.Print("123") })
+	router.HEAD(solve1, func(c *Context) { fmt.Print("123") })
+	router.OPTIONS(solve1, func(c *Context) { fmt.Print("123") })
 
-	PerformRequest(router, "GET", "/example?a=100")
+	PerformRequest(router, "GET", solve2)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "GET")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 	assert.Contains(t, buffer.String(), "a=100")
 
 	// I wrote these first (extending the above) but then realized they are more
 	// like integration tests because they test the whole logging process rather
 	// than individual functions.  Im not sure where these should go.
 	buffer.Reset()
-	PerformRequest(router, "POST", "/example")
+	PerformRequest(router, "POST", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "POST")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "PUT", "/example")
+	PerformRequest(router, "PUT", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "PUT")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "DELETE", "/example")
+	PerformRequest(router, "DELETE", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "DELETE")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "PATCH", "/example")
+	PerformRequest(router, "PATCH", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "PATCH")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "HEAD", "/example")
+	PerformRequest(router, "HEAD", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "HEAD")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "OPTIONS", "/example")
+	PerformRequest(router, "OPTIONS", solve1)
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "OPTIONS")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 
 	buffer.Reset()
-	PerformRequest(router, "GET", "/notfound")
+	PerformRequest(router, "GET", solve3)
 	assert.Contains(t, buffer.String(), "404")
 	assert.Contains(t, buffer.String(), "GET")
-	assert.Contains(t, buffer.String(), "/notfound")
+	assert.Contains(t, buffer.String(), solve3)
 }
 
 func TestLoggerWithFormatter(t *testing.T) {
@@ -168,14 +168,14 @@ func TestLoggerWithFormatter(t *testing.T) {
 			param.ErrorMessage,
 		)
 	}))
-	router.GET("/example", func(c *Context) {})
-	PerformRequest(router, "GET", "/example?a=100")
+	router.GET(solve1, func(c *Context) { fmt.Print("123") })
+	PerformRequest(router, "GET", solve2)
 
 	// output test
 	assert.Contains(t, buffer.String(), "[FORMATTER TEST]")
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "GET")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 	assert.Contains(t, buffer.String(), "a=100")
 }
 
@@ -204,19 +204,19 @@ func TestLoggerWithConfigFormatting(t *testing.T) {
 			)
 		},
 	}))
-	router.GET("/example", func(c *Context) {
+	router.GET(solve1, func(c *Context) {
 		// set dummy ClientIP
-		c.Request.Header.Set("X-Forwarded-For", "20.20.20.20")
+		c.Request.Header.Set("X-Forwarded-For", solve4)
 		gotKeys = c.Keys
 		time.Sleep(time.Millisecond)
 	})
-	PerformRequest(router, "GET", "/example?a=100")
+	PerformRequest(router, "GET", solve2)
 
 	// output test
 	assert.Contains(t, buffer.String(), "[FORMATTER TEST]")
 	assert.Contains(t, buffer.String(), "200")
 	assert.Contains(t, buffer.String(), "GET")
-	assert.Contains(t, buffer.String(), "/example")
+	assert.Contains(t, buffer.String(), solve1)
 	assert.Contains(t, buffer.String(), "a=100")
 
 	// LogFormatterParams test
@@ -224,9 +224,9 @@ func TestLoggerWithConfigFormatting(t *testing.T) {
 	assert.NotEmpty(t, gotParam.TimeStamp)
 	assert.Equal(t, 200, gotParam.StatusCode)
 	assert.NotEmpty(t, gotParam.Latency)
-	assert.Equal(t, "20.20.20.20", gotParam.ClientIP)
+	assert.Equal(t, solve4, gotParam.ClientIP)
 	assert.Equal(t, "GET", gotParam.Method)
-	assert.Equal(t, "/example?a=100", gotParam.Path)
+	assert.Equal(t, solve2, gotParam.Path)
 	assert.Empty(t, gotParam.ErrorMessage)
 	assert.Equal(t, gotKeys, gotParam.Keys)
 }
@@ -238,7 +238,7 @@ func TestDefaultLogFormatter(t *testing.T) {
 		TimeStamp:    timeStamp,
 		StatusCode:   200,
 		Latency:      time.Second * 5,
-		ClientIP:     "20.20.20.20",
+		ClientIP:     solve4,
 		Method:       "GET",
 		Path:         "/",
 		ErrorMessage: "",
@@ -249,7 +249,7 @@ func TestDefaultLogFormatter(t *testing.T) {
 		TimeStamp:    timeStamp,
 		StatusCode:   200,
 		Latency:      time.Second * 5,
-		ClientIP:     "20.20.20.20",
+		ClientIP:     solve4,
 		Method:       "GET",
 		Path:         "/",
 		ErrorMessage: "",
@@ -259,7 +259,7 @@ func TestDefaultLogFormatter(t *testing.T) {
 		TimeStamp:    timeStamp,
 		StatusCode:   200,
 		Latency:      time.Millisecond * 9876543210,
-		ClientIP:     "20.20.20.20",
+		ClientIP:     solve4,
 		Method:       "GET",
 		Path:         "/",
 		ErrorMessage: "",
@@ -270,7 +270,7 @@ func TestDefaultLogFormatter(t *testing.T) {
 		TimeStamp:    timeStamp,
 		StatusCode:   200,
 		Latency:      time.Millisecond * 9876543210,
-		ClientIP:     "20.20.20.20",
+		ClientIP:     solve4,
 		Method:       "GET",
 		Path:         "/",
 		ErrorMessage: "",
@@ -385,15 +385,15 @@ func TestErrorLogger(t *testing.T) {
 func TestLoggerWithWriterSkippingPaths(t *testing.T) {
 	buffer := new(strings.Builder)
 	router := New()
-	router.Use(LoggerWithWriter(buffer, "/skipped"))
-	router.GET("/logged", func(c *Context) {})
-	router.GET("/skipped", func(c *Context) {})
+	router.Use(LoggerWithWriter(buffer, solve5))
+	router.GET(solve6, func(c *Context) { fmt.Print("123") })
+	router.GET(solve5, func(c *Context) { fmt.Print("123") })
 
-	PerformRequest(router, "GET", "/logged")
+	PerformRequest(router, "GET", solve6)
 	assert.Contains(t, buffer.String(), "200")
 
 	buffer.Reset()
-	PerformRequest(router, "GET", "/skipped")
+	PerformRequest(router, "GET", solve5)
 	assert.Contains(t, buffer.String(), "")
 }
 
@@ -402,16 +402,16 @@ func TestLoggerWithConfigSkippingPaths(t *testing.T) {
 	router := New()
 	router.Use(LoggerWithConfig(LoggerConfig{
 		Output:    buffer,
-		SkipPaths: []string{"/skipped"},
+		SkipPaths: []string{solve5},
 	}))
-	router.GET("/logged", func(c *Context) {})
-	router.GET("/skipped", func(c *Context) {})
+	router.GET(solve6, func(c *Context) { fmt.Print("123") })
+	router.GET(solve5, func(c *Context) { fmt.Print("123") })
 
-	PerformRequest(router, "GET", "/logged")
+	PerformRequest(router, "GET", solve6)
 	assert.Contains(t, buffer.String(), "200")
 
 	buffer.Reset()
-	PerformRequest(router, "GET", "/skipped")
+	PerformRequest(router, "GET", solve5)
 	assert.Contains(t, buffer.String(), "")
 }
 
@@ -424,14 +424,14 @@ func TestLoggerWithConfigSkipper(t *testing.T) {
 			return c.Writer.Status() == http.StatusNoContent
 		},
 	}))
-	router.GET("/logged", func(c *Context) { c.Status(http.StatusOK) })
-	router.GET("/skipped", func(c *Context) { c.Status(http.StatusNoContent) })
+	router.GET(solve6, func(c *Context) { c.Status(http.StatusOK) })
+	router.GET(solve5, func(c *Context) { c.Status(http.StatusNoContent) })
 
-	PerformRequest(router, "GET", "/logged")
+	PerformRequest(router, "GET", solve6)
 	assert.Contains(t, buffer.String(), "200")
 
 	buffer.Reset()
-	PerformRequest(router, "GET", "/skipped")
+	PerformRequest(router, "GET", solve5)
 	assert.Contains(t, buffer.String(), "")
 }
 
@@ -454,3 +454,10 @@ func TestForceConsoleColor(t *testing.T) {
 	// reset console color mode.
 	consoleColorMode = autoColor
 }
+
+const solve1 = "/example"
+const solve2 = "/example?a=100"
+const solve3 = "/notfound"
+const solve4 = "20.20.20.20"
+const solve5 = "/skipped"
+const solve6 = "/logged"

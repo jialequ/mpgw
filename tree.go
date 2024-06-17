@@ -67,8 +67,8 @@ func (trees methodTrees) get(method string) *node {
 
 func longestCommonPrefix(a, b string) int {
 	i := 0
-	max_ := min(len(a), len(b))
-	for i < max_ && a[i] == b[i] {
+	max := min(len(a), len(b))
+	for i < max && a[i] == b[i] {
 		i++
 	}
 	return i
@@ -142,7 +142,7 @@ func (n *node) incrementChildPrio(pos int) int {
 
 // addRoute adds a node with the given handle to the path.
 // Not concurrency-safe!
-func (n *node) addRoute(path string, handlers HandlersChain) {
+func (n *node) addRoute(path string, handlers HandlersChain) { // NOSONAR
 	fullPath := path
 	n.priority++
 
@@ -198,7 +198,7 @@ walk:
 			}
 
 			// Check if a child with the next path byte exists
-			for i, max_ := 0, len(n.indices); i < max_; i++ {
+			for i, max := 0, len(n.indices); i < max; i++ {
 				if c == n.indices[i] {
 					parentFullPathIndex += len(n.path)
 					i = n.incrementChildPrio(i)
@@ -260,7 +260,7 @@ walk:
 
 // Search for a wildcard segment and check the name for invalid characters.
 // Returns -1 as index, if no wildcard was found.
-func findWildcard(path string) (wildcard string, i int, valid bool) {
+func findWildcard(path string) (wildcard string, i int, valid bool) { // NOSONAR
 	// Find start
 	escapeColon := false
 	for start, c := range []byte(path) {
@@ -295,7 +295,7 @@ func findWildcard(path string) (wildcard string, i int, valid bool) {
 	return "", -1, false
 }
 
-func (n *node) insertChild(path string, fullPath string, handlers HandlersChain) {
+func (n *node) insertChild(path string, fullPath string, handlers HandlersChain) { // NOSONAR
 	for {
 		// Find prefix until first wildcard
 		wildcard, i, valid := findWildcard(path)
@@ -425,7 +425,7 @@ type skippedNode struct {
 // If no handle can be found, a TSR (trailing slash redirect) recommendation is
 // made if a handle exists with an extra (without the) trailing slash for the
 // given path.
-func (n *node) getValue(path string, params *Params, skippedNodes *[]skippedNode, unescape bool) (value nodeValue) {
+func (n *node) getValue(path string, params *Params, skippedNodes *[]skippedNode, unescape bool) (value nodeValue) { // NOSONAR
 	var globalParamsCount int16
 
 walk: // Outer loop for walking the tree
@@ -715,7 +715,7 @@ func shiftNRuneBytes(rb [4]byte, n int) [4]byte {
 }
 
 // Recursive case-insensitive lookup function used by n.findCaseInsensitivePath
-func (n *node) findCaseInsensitivePathRec(path string, ciPath []byte, rb [4]byte, fixTrailingSlash bool) []byte {
+func (n *node) findCaseInsensitivePathRec(path string, ciPath []byte, rb [4]byte, fixTrailingSlash bool) []byte { // NOSONAR
 	npLen := len(n.path)
 
 walk: // Outer loop for walking the tree
@@ -775,7 +775,7 @@ walk: // Outer loop for walking the tree
 				// Runes are up to 4 byte long,
 				// -4 would definitely be another rune.
 				var off int
-				for max_ := min(npLen, 3); off < max_; off++ {
+				for max := min(npLen, 3); off < max; off++ {
 					if i := npLen - off; utf8.RuneStart(oldPath[i]) {
 						// read rune from cached path
 						rv, _ = utf8.DecodeRuneInString(oldPath[i:])

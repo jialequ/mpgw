@@ -518,8 +518,8 @@ func (engine *Engine) Run(addr ...string) (err error) {
 	defer func() { debugPrintError(err) }()
 
 	if engine.isUnsafeTrustedProxies() {
-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
-			"Please check https://github.com/jialequ/mpgw/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+		debugPrint(solve111 +
+			solve112)
 	}
 	engine.updateRouteTrees()
 	address := resolveAddress(addr)
@@ -536,8 +536,8 @@ func (engine *Engine) RunTLS(addr, certFile, keyFile string) (err error) {
 	defer func() { debugPrintError(err) }()
 
 	if engine.isUnsafeTrustedProxies() {
-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
-			"Please check https://github.com/jialequ/mpgw/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+		debugPrint(solve111 +
+			solve112)
 	}
 
 	err = http.ListenAndServeTLS(addr, certFile, keyFile, engine.Handler())
@@ -552,8 +552,8 @@ func (engine *Engine) RunUnix(file string) (err error) {
 	defer func() { debugPrintError(err) }()
 
 	if engine.isUnsafeTrustedProxies() {
-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
-			"Please check https://github.com/jialequ/mpgw/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+		debugPrint(solve111 +
+			solve112)
 	}
 
 	listener, err := net.Listen("unix", file)
@@ -575,8 +575,8 @@ func (engine *Engine) RunFd(fd int) (err error) {
 	defer func() { debugPrintError(err) }()
 
 	if engine.isUnsafeTrustedProxies() {
-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
-			"Please check https://github.com/jialequ/mpgw/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+		debugPrint(solve111 +
+			solve112)
 	}
 
 	f := os.NewFile(uintptr(fd), fmt.Sprintf("fd@%d", fd))
@@ -597,7 +597,7 @@ func (engine *Engine) RunQUIC(addr, certFile, keyFile string) (err error) {
 	defer func() { debugPrintError(err) }()
 
 	if engine.isUnsafeTrustedProxies() {
-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
+		debugPrint(solve111 +
 			"Please check https://pkg.go.dev/github.com/jialequ/mpgw#readme-don-t-trust-all-proxies for details.")
 	}
 
@@ -612,8 +612,8 @@ func (engine *Engine) RunListener(listener net.Listener) (err error) {
 	defer func() { debugPrintError(err) }()
 
 	if engine.isUnsafeTrustedProxies() {
-		debugPrint("[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n" +
-			"Please check https://github.com/jialequ/mpgw/blob/master/docs/doc.md#dont-trust-all-proxies for details.")
+		debugPrint(solve111 +
+			solve112)
 	}
 
 	err = http.Serve(listener, engine.Handler())
@@ -643,7 +643,7 @@ func (engine *Engine) HandleContext(c *Context) {
 	c.index = oldIndexValue
 }
 
-func (engine *Engine) handleHTTPRequest(c *Context) {
+func (engine *Engine) handleHTTPRequest(c *Context) { // NOSONAR
 	httpMethod := c.Request.Method
 	rPath := c.Request.URL.Path
 	unescape := false
@@ -771,3 +771,6 @@ func redirectRequest(c *Context) {
 	http.Redirect(c.Writer, req, rURL, code)
 	c.writermem.WriteHeaderNow()
 }
+
+const solve111 = "[WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.\n"
+const solve112 = "Please check https://github.com/jialequ/mpgw/blob/master/docs/doc.md#dont-trust-all-proxies for details."

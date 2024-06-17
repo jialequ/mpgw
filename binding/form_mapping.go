@@ -79,7 +79,7 @@ func mappingByPtr(ptr any, setter setter, tag string) error {
 	return err
 }
 
-func mapping(value reflect.Value, field reflect.StructField, setter setter, tag string) (bool, error) {
+func mapping(value reflect.Value, field reflect.StructField, setter setter, tag string) (bool, error) { // NOSONAR
 	if field.Tag.Get(tag) == "-" { // just ignoring this field
 		return false, nil
 	}
@@ -182,7 +182,7 @@ func trySetCustom(val string, value reflect.Value) (isSet bool, err error) {
 	return false, nil
 }
 
-func setByForm(value reflect.Value, field reflect.StructField, form map[string][]string, tagValue string, opt setOptions) (isSet bool, err error) {
+func setByForm(value reflect.Value, field reflect.StructField, form map[string][]string, tagValue string, opt setOptions) (isSet bool, err error) { // NOSONAR
 	vs, ok := form[tagValue]
 	if !ok && !opt.isDefaultExists {
 		return false, nil

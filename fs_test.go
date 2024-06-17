@@ -17,7 +17,7 @@ func (m *mockFileSystem) Open(name string) (http.File, error) {
 	return m.open(name)
 }
 
-func TestOnlyFilesFS_Open(t *testing.T) {
+func TestOnlyFilesFSOpen(t *testing.T) {
 	var testFile *os.File
 	mockFS := &mockFileSystem{
 		open: func(name string) (http.File, error) {
@@ -32,7 +32,7 @@ func TestOnlyFilesFS_Open(t *testing.T) {
 	assert.Equal(t, testFile, file.(neutralizedReaddirFile).File)
 }
 
-func TestOnlyFilesFS_Open_err(t *testing.T) {
+func TestOnlyFilesFSOpenerr(t *testing.T) {
 	testError := errors.New("mock")
 	mockFS := &mockFileSystem{
 		open: func(_ string) (http.File, error) {
@@ -47,7 +47,7 @@ func TestOnlyFilesFS_Open_err(t *testing.T) {
 	assert.Nil(t, file)
 }
 
-func Test_neuteredReaddirFile_Readdir(t *testing.T) {
+func TestneuteredReaddirFileReaddir(t *testing.T) {
 	n := neutralizedReaddirFile{}
 
 	res, err := n.Readdir(0)
@@ -56,7 +56,7 @@ func Test_neuteredReaddirFile_Readdir(t *testing.T) {
 	assert.Nil(t, res)
 }
 
-func TestDir_listDirectory(t *testing.T) {
+func TestDirlistDirectory(t *testing.T) {
 	testRoot := "foo"
 	fs := Dir(testRoot, true)
 

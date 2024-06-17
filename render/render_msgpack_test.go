@@ -15,7 +15,6 @@ import (
 	"github.com/ugorji/go/codec"
 )
 
-// TODO unit tests
 // test errors
 
 func TestRenderMsgPack(t *testing.T) {

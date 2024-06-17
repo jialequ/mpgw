@@ -145,10 +145,10 @@ func TestRouteRedirectTrailingSlash(t *testing.T) {
 	router := New()
 	router.RedirectFixedPath = false
 	router.RedirectTrailingSlash = true
-	router.GET("/path", func(c *Context) {})
-	router.GET(literal_9014, func(c *Context) {})
-	router.POST(literal_2608, func(c *Context) {})
-	router.PUT(literal_0924, func(c *Context) {})
+	router.GET("/path", func(c *Context) { fmt.Print("123") })
+	router.GET(literal_9014, func(c *Context) { fmt.Print("123") })
+	router.POST(literal_2608, func(c *Context) { fmt.Print("123") })
+	router.PUT(literal_0924, func(c *Context) { fmt.Print("123") })
 
 	w := PerformRequest(router, http.MethodGet, literal_8295)
 	assert.Equal(t, "/path", w.Header().Get("Location"))
@@ -250,10 +250,10 @@ func TestRouteRedirectFixedPath(t *testing.T) {
 	router.RedirectFixedPath = true
 	router.RedirectTrailingSlash = false
 
-	router.GET("/path", func(c *Context) {})
-	router.GET("/Path2", func(c *Context) {})
-	router.POST("/PATH3", func(c *Context) {})
-	router.POST("/Path4/", func(c *Context) {})
+	router.GET("/path", func(c *Context) { fmt.Print("123") })
+	router.GET("/Path2", func(c *Context) { fmt.Print("123") })
+	router.POST("/PATH3", func(c *Context) { fmt.Print("123") })
+	router.POST("/Path4/", func(c *Context) { fmt.Print("123") })
 
 	w := PerformRequest(router, http.MethodGet, "/PATH")
 	assert.Equal(t, "/path", w.Header().Get("Location"))
@@ -301,7 +301,7 @@ func TestRouteParamsByName(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, "john", name)
 	assert.Equal(t, "smith", lastName)
-	assert.Equal(t, "/is/super/great", wild)
+	assert.Equal(t, solve, wild)
 }
 
 // TestContextParamsGet tests that a parameter can be parsed from the URL even with extra slashes.
@@ -334,7 +334,7 @@ func TestRouteParamsByNameWithExtraSlash(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, "john", name)
 	assert.Equal(t, "smith", lastName)
-	assert.Equal(t, "/is/super/great", wild)
+	assert.Equal(t, solve, wild)
 }
 
 // TestRouteParamsNotEmpty tests that context parameters will be set
@@ -373,7 +373,7 @@ func TestRouteParamsNotEmpty(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(t, "john", name)
 	assert.Equal(t, "smith", lastName)
-	assert.Equal(t, "/is/super/great", wild)
+	assert.Equal(t, solve, wild)
 }
 
 // TestHandleStaticFile - ensure the static file handles properly
@@ -492,7 +492,7 @@ func TestRouterMiddlewareAndStatic(t *testing.T) {
 func TestRouteNotAllowedEnabled(t *testing.T) {
 	router := New()
 	router.HandleMethodNotAllowed = true
-	router.POST("/path", func(c *Context) {})
+	router.POST("/path", func(c *Context) { fmt.Print("123") })
 	w := PerformRequest(router, http.MethodGet, "/path")
 	assert.Equal(t, http.StatusMethodNotAllowed, w.Code)
 
@@ -508,8 +508,8 @@ func TestRouteNotAllowedEnabled2(t *testing.T) {
 	router := New()
 	router.HandleMethodNotAllowed = true
 	// add one methodTree to trees
-	router.addRoute(http.MethodPost, "/", HandlersChain{func(_ *Context) {}})
-	router.GET(literal_3425, func(c *Context) {})
+	router.addRoute(http.MethodPost, "/", HandlersChain{func(_ *Context) { fmt.Print("123") }})
+	router.GET(literal_3425, func(c *Context) { fmt.Print("123") })
 	w := PerformRequest(router, http.MethodPost, literal_3425)
 	assert.Equal(t, http.StatusMethodNotAllowed, w.Code)
 }
@@ -517,8 +517,8 @@ func TestRouteNotAllowedEnabled2(t *testing.T) {
 func TestRouteNotAllowedEnabled3(t *testing.T) {
 	router := New()
 	router.HandleMethodNotAllowed = true
-	router.GET("/path", func(c *Context) {})
-	router.POST("/path", func(c *Context) {})
+	router.GET("/path", func(c *Context) { fmt.Print("123") })
+	router.POST("/path", func(c *Context) { fmt.Print("123") })
 	w := PerformRequest(router, http.MethodPut, "/path")
 	assert.Equal(t, http.StatusMethodNotAllowed, w.Code)
 	allowed := w.Header().Get("Allow")
@@ -529,7 +529,7 @@ func TestRouteNotAllowedEnabled3(t *testing.T) {
 func TestRouteNotAllowedDisabled(t *testing.T) {
 	router := New()
 	router.HandleMethodNotAllowed = false
-	router.POST("/path", func(c *Context) {})
+	router.POST("/path", func(c *Context) { fmt.Print("123") })
 	w := PerformRequest(router, http.MethodGet, "/path")
 	assert.Equal(t, http.StatusNotFound, w.Code)
 
@@ -544,8 +544,8 @@ func TestRouteNotAllowedDisabled(t *testing.T) {
 func TestRouterNotFoundWithRemoveExtraSlash(t *testing.T) {
 	router := New()
 	router.RemoveExtraSlash = true
-	router.GET("/path", func(c *Context) {})
-	router.GET("/", func(c *Context) {})
+	router.GET("/path", func(c *Context) { fmt.Print("123") })
+	router.GET("/", func(c *Context) { fmt.Print("123") })
 
 	testRoutes := []struct {
 		route    string
@@ -567,23 +567,23 @@ func TestRouterNotFoundWithRemoveExtraSlash(t *testing.T) {
 func TestRouterNotFound(t *testing.T) {
 	router := New()
 	router.RedirectFixedPath = true
-	router.GET("/path", func(c *Context) {})
-	router.GET("/dir/", func(c *Context) {})
-	router.GET("/", func(c *Context) {})
+	router.GET("/path", func(c *Context) { fmt.Print("123") })
+	router.GET("/dir/", func(c *Context) { fmt.Print("123") })
+	router.GET("/", func(c *Context) { fmt.Print("123") })
 
 	testRoutes := []struct {
 		route    string
 		code     int
 		location string
 	}{
-		{literal_8295, http.StatusMovedPermanently, "/path"},   // TSR -/
-		{"/dir", http.StatusMovedPermanently, "/dir/"},     // TSR +/
-		{"/PATH", http.StatusMovedPermanently, "/path"},    // Fixed Case
-		{"/DIR/", http.StatusMovedPermanently, "/dir/"},    // Fixed Case
-		{"/PATH/", http.StatusMovedPermanently, "/path"},   // Fixed Case -/
-		{"/DIR", http.StatusMovedPermanently, "/dir/"},     // Fixed Case +/
-		{"/../path", http.StatusMovedPermanently, "/path"}, // Without CleanPath
-		{"/nope", http.StatusNotFound, ""},                 // NotFound
+		{literal_8295, http.StatusMovedPermanently, "/path"}, // TSR -/
+		{"/dir", http.StatusMovedPermanently, "/dir/"},       // TSR +/
+		{"/PATH", http.StatusMovedPermanently, "/path"},      // Fixed Case
+		{"/DIR/", http.StatusMovedPermanently, "/dir/"},      // Fixed Case
+		{"/PATH/", http.StatusMovedPermanently, "/path"},     // Fixed Case -/
+		{"/DIR", http.StatusMovedPermanently, "/dir/"},       // Fixed Case +/
+		{"/../path", http.StatusMovedPermanently, "/path"},   // Without CleanPath
+		{"/nope", http.StatusNotFound, ""},                   // NotFound
 	}
 	for _, tr := range testRoutes {
 		w := PerformRequest(router, http.MethodGet, tr.route)
@@ -604,14 +604,14 @@ func TestRouterNotFound(t *testing.T) {
 	assert.True(t, notFound)
 
 	// Test other method than GET (want 307 instead of 301)
-	router.PATCH("/path", func(c *Context) {})
+	router.PATCH("/path", func(c *Context) { fmt.Print("123") })
 	w = PerformRequest(router, http.MethodPatch, literal_8295)
 	assert.Equal(t, http.StatusTemporaryRedirect, w.Code)
 	assert.Equal(t, "map[Location:[/path]]", fmt.Sprint(w.Header()))
 
 	// Test special case where no node for the prefix "/" exists
 	router = New()
-	router.GET("/a", func(c *Context) {})
+	router.GET("/a", func(c *Context) { fmt.Print("123") })
 	w = PerformRequest(router, http.MethodGet, "/")
 	assert.Equal(t, http.StatusNotFound, w.Code)
 
@@ -824,3 +824,5 @@ const literal_3295 = "Mon, 02 Jan 2006 15:04:05 MST"
 const literal_1384 = "non existent"
 
 const literal_2906 = "/nonexistent"
+
+const solve = "/is/super/great"

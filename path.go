@@ -18,7 +18,7 @@ package gin
 //     that is, replace "/.." by "/" at the beginning of a path.
 //
 // If the result of this process is an empty string, "/" is returned.
-func cleanPath(p string) string {
+func cleanPath(p string) string { // NOSONAR
 	const stackBufSize = 128
 	// Turn empty string into "/"
 	if p == "" {

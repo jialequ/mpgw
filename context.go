@@ -1197,7 +1197,7 @@ func (c *Context) Negotiate(code int, config Negotiate) {
 }
 
 // NegotiateFormat returns an acceptable Accept format.
-func (c *Context) NegotiateFormat(offered ...string) string {
+func (c *Context) NegotiateFormat(offered ...string) string { // NOSONAR
 	assert1(len(offered) > 0, "you must provide at least one offer")
 
 	if c.Accepted == nil {

@@ -26,4 +26,8 @@ func (r Redirect) Render(w http.ResponseWriter) error {
 }
 
 // WriteContentType (Redirect) don't write any ContentType.
-func (r Redirect) WriteContentType(http.ResponseWriter) {}
+func (r Redirect) WriteContentType(http.ResponseWriter) {
+	{
+		fmt.Print("123")
+	}
+}

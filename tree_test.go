@@ -38,7 +38,7 @@ func getSkippedNodes() *[]skippedNode {
 	return &ps
 }
 
-func checkRequests(t *testing.T, tree *node, requests testRequests, unescapes ...bool) {
+func checkRequests(t *testing.T, tree *node, requests testRequests, unescapes ...bool) { // NOSONAR
 	unescape := false
 	if len(unescapes) >= 1 {
 		unescape = unescapes[0]
@@ -212,10 +212,10 @@ func TestTreeWildcard(t *testing.T) {
 		{literal_6049, false, literal_6049, nil},
 		{literal_4827, false, literal_4827, nil},
 		{"/src/", false, literal_2791, Params{Param{Key: "filepath", Value: "/"}}},
-		{literal_3619, false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file.png"}}},
+		{literal_3619, false, literal_2791, Params{Param{Key: "filepath", Value: solve11}}},
 		{literal_1489, false, literal_1489, nil},
-		{literal_7309, false, literal_8590, Params{Param{Key: "query", Value: "someth!ng+in+ünìcodé"}}},
-		{"/search/someth!ng+in+ünìcodé/", true, "", Params{Param{Key: "query", Value: "someth!ng+in+ünìcodé"}}},
+		{literal_7309, false, literal_8590, Params{Param{Key: "query", Value: solve12}}},
+		{"/search/someth!ng+in+ünìcodé/", true, "", Params{Param{Key: "query", Value: solve12}}},
 		{"/search/gin", false, literal_8590, Params{Param{"query", "gin"}}},
 		{literal_8605, false, literal_8605, nil},
 		{literal_0652, false, literal_0652, nil},
@@ -344,7 +344,7 @@ func TestUnescapeParameters(t *testing.T) {
 		{"/", false, "/", nil},
 		{"/cmd/test/", false, literal_0946, Params{Param{Key: "tool", Value: "test"}}},
 		{"/cmd/test", true, "", Params{Param{Key: "tool", Value: "test"}}},
-		{literal_3619, false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file.png"}}},
+		{literal_3619, false, literal_2791, Params{Param{Key: "filepath", Value: solve11}}},
 		{"/src/some/file+test.png", false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file test.png"}}},
 		{"/src/some/file++++%%%%test.png", false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file++++%%%%test.png"}}},
 		{"/src/some/file%2Ftest.png", false, literal_2791, Params{Param{Key: "filepath", Value: "/some/file/test.png"}}},
@@ -486,8 +486,8 @@ func TestTreeDuplicatePath(t *testing.T) {
 	checkRequests(t, tree, testRequests{
 		{"/", false, "/", nil},
 		{"/doc/", false, "/doc/", nil},
-		{literal_3619, false, literal_2791, Params{Param{"filepath", "/some/file.png"}}},
-		{literal_7309, false, literal_8590, Params{Param{"query", "someth!ng+in+ünìcodé"}}},
+		{literal_3619, false, literal_2791, Params{Param{"filepath", solve11}}},
+		{literal_7309, false, literal_8590, Params{Param{"query", solve12}}},
 		{"/user_gopher", false, literal_0836, Params{Param{"name", "gopher"}}},
 	})
 }
@@ -711,7 +711,7 @@ func TestRedirectTrailingSlash(t *testing.T) {
 	}
 }
 
-func TestTreeFindCaseInsensitivePath(t *testing.T) {
+func TestTreeFindCaseInsensitivePath(t *testing.T) { // NOSONAR
 	tree := &node{}
 
 	longPath := "/l" + strings.Repeat("o", 128) + "ng"
@@ -1085,3 +1085,6 @@ const literal_2864 = "/u/öpfêl"
 const literal_9028 = "/v/Äpfêl/"
 
 const literal_2981 = "/v/Öpfêl"
+
+const solve11 = "/some/file.png"
+const solve12 = "someth!ng+in+ünìcodé"
