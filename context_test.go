@@ -24,8 +24,8 @@ import (
 	"time"
 
 	"github.com/gin-contrib/sse"
-	"github.com/gin-gonic/gin/binding"
-	testdata "github.com/gin-gonic/gin/testdata/protoexample"
+	"github.com/jialequ/mpgw/binding"
+	testdata "github.com/jialequ/mpgw/testdata/protoexample"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 )
@@ -357,7 +357,7 @@ func TestContextHandlerName(t *testing.T) {
 	c, _ := CreateTestContext(httptest.NewRecorder())
 	c.handlers = HandlersChain{func(c *Context) {}, handlerNameTest}
 
-	assert.Regexp(t, "^(.*/vendor/)?github.com/gin-gonic/gin.handlerNameTest$", c.HandlerName())
+	assert.Regexp(t, "^(.*/vendor/)?github.com/jialequ/mpgw.handlerNameTest$", c.HandlerName())
 }
 
 func TestContextHandlerNames(t *testing.T) {
@@ -424,7 +424,7 @@ func TestContextQuery(t *testing.T) {
 }
 
 func TestContextInitQueryCache(t *testing.T) {
-	validURL, err := url.Parse("https://github.com/gin-gonic/gin/pull/3969?key=value&otherkey=othervalue")
+	validURL, err := url.Parse("https://github.com/jialequ/mpgw/pull/3969?key=value&otherkey=othervalue")
 	assert.Nil(t, err)
 
 	tests := []struct {

@@ -1,0 +1,5 @@
+"filename", "language", "Go", "Markdown", "comment", "blank", "total"
+"/Users/qujiale/code/sonar/6/mpgw/docs/doc.md", "Markdown", 0, -1826, 0, -508, -2334
+"/Users/qujiale/code/sonar/6/mpgw/ginS/README.md", "Markdown", 0, 13, 0, 5, 18
+"/Users/qujiale/code/sonar/6/mpgw/ginS/gins.go", "Go", 87, 0, 44, 30, 161
+"Total", "-", 87, -1813, 44, -473, -2155

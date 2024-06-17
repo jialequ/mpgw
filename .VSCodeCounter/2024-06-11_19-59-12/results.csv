@@ -1,0 +1,17 @@
+"filename", "language", "Go", "comment", "blank", "total"
+"/Users/qujiale/code/sonar/6/mpgw/render/data.go", "Go", 14, 6, 6, 26
+"/Users/qujiale/code/sonar/6/mpgw/render/html.go", "Go", 64, 15, 14, 93
+"/Users/qujiale/code/sonar/6/mpgw/render/json.go", "Go", 136, 23, 32, 191
+"/Users/qujiale/code/sonar/6/mpgw/render/msgpack.go", "Go", 23, 10, 11, 44
+"/Users/qujiale/code/sonar/6/mpgw/render/protobuf.go", "Go", 21, 6, 10, 37
+"/Users/qujiale/code/sonar/6/mpgw/render/reader.go", "Go", 35, 7, 7, 49
+"/Users/qujiale/code/sonar/6/mpgw/render/reader_test.go", "Go", 16, 3, 5, 24
+"/Users/qujiale/code/sonar/6/mpgw/render/redirect.go", "Go", 18, 6, 6, 30
+"/Users/qujiale/code/sonar/6/mpgw/render/render.go", "Go", 30, 6, 6, 42
+"/Users/qujiale/code/sonar/6/mpgw/render/render_msgpack_test.go", "Go", 26, 6, 12, 44
+"/Users/qujiale/code/sonar/6/mpgw/render/render_test.go", "Go", 466, 14, 114, 594
+"/Users/qujiale/code/sonar/6/mpgw/render/text.go", "Go", 26, 7, 9, 42
+"/Users/qujiale/code/sonar/6/mpgw/render/toml.go", "Go", 21, 6, 10, 37
+"/Users/qujiale/code/sonar/6/mpgw/render/xml.go", "Go", 16, 6, 7, 29
+"/Users/qujiale/code/sonar/6/mpgw/render/yaml.go", "Go", 21, 6, 10, 37
+"Total", "-", 933, 127, 259, 1319
