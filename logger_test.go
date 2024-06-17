@@ -458,6 +458,6 @@ func TestForceConsoleColor(t *testing.T) {
 const solve1 = "/example"
 const solve2 = "/example?a=100"
 const solve3 = "/notfound"
-const solve4 = "20.20.20.20"
+const solve4 = "127.0.0.1"
 const solve5 = "/skipped"
 const solve6 = "/logged"

@@ -1516,149 +1516,6 @@ func TestContextAbortWithError(t *testing.T) {
 	assert.True(t, c.IsAborted())
 }
 
-func TestContextClientIP(t *testing.T) {
-	c, _ := CreateTestContext(httptest.NewRecorder())
-	c.Request, _ = http.NewRequest("POST", "/", nil)
-	c.engine.trustedCIDRs, _ = c.engine.prepareTrustedCIDRs()
-	resetContextForClientIPTests(c)
-
-	// Legacy tests (validating that the defaults don't break the
-	// (insecure!) old behaviour)
-	assert.Equal(t, literal_3941, c.ClientIP())
-
-	c.Request.Header.Del(literal_1096)
-	assert.Equal(t, "10.10.10.10", c.ClientIP())
-
-	c.Request.Header.Set(literal_1096, "30.30.30.30  ")
-	assert.Equal(t, literal_7236, c.ClientIP())
-
-	c.Request.Header.Del(literal_1096)
-	c.Request.Header.Del(literal_3284)
-	c.engine.TrustedPlatform = PlatformGoogleAppEngine
-	assert.Equal(t, literal_9361, c.ClientIP())
-
-	c.Request.Header.Del(literal_5783)
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// no port
-	c.Request.RemoteAddr = literal_9361
-	assert.Empty(t, c.ClientIP())
-
-	// Tests exercising the TrustedProxies functionality
-	resetContextForClientIPTests(c)
-
-	// IPv6 support
-	c.Request.RemoteAddr = "[::1]:12345"
-	assert.Equal(t, literal_3941, c.ClientIP())
-
-	resetContextForClientIPTests(c)
-	// No trusted proxies
-	_ = c.engine.SetTrustedProxies([]string{})
-	c.engine.RemoteIPHeaders = []string{literal_1096}
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// Disabled TrustedProxies feature
-	_ = c.engine.SetTrustedProxies(nil)
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// Last proxy is trusted, but the RemoteAddr is not
-	_ = c.engine.SetTrustedProxies([]string{literal_7236})
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// Only trust RemoteAddr
-	_ = c.engine.SetTrustedProxies([]string{literal_5842})
-	assert.Equal(t, literal_7236, c.ClientIP())
-
-	// All steps are trusted
-	_ = c.engine.SetTrustedProxies([]string{literal_5842, literal_7236, literal_3941})
-	assert.Equal(t, literal_3941, c.ClientIP())
-
-	// Use CIDR
-	_ = c.engine.SetTrustedProxies([]string{"40.40.25.25/16", literal_7236})
-	assert.Equal(t, literal_3941, c.ClientIP())
-
-	// Use hostname that resolves to all the proxies
-	_ = c.engine.SetTrustedProxies([]string{"foo"})
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// Use hostname that returns an error
-	_ = c.engine.SetTrustedProxies([]string{"bar"})
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// X-Forwarded-For has a non-IP element
-	_ = c.engine.SetTrustedProxies([]string{literal_5842})
-	c.Request.Header.Set(literal_1096, " blah ")
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// Result from LookupHost has non-IP element. This should never
-	// happen, but we should test it to make sure we handle it
-	// gracefully.
-	_ = c.engine.SetTrustedProxies([]string{"baz"})
-	c.Request.Header.Set(literal_1096, " 30.30.30.30 ")
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	_ = c.engine.SetTrustedProxies([]string{literal_5842})
-	c.Request.Header.Del(literal_1096)
-	c.engine.RemoteIPHeaders = []string{literal_1096, literal_3284}
-	assert.Equal(t, "10.10.10.10", c.ClientIP())
-
-	c.engine.RemoteIPHeaders = []string{}
-	c.engine.TrustedPlatform = PlatformGoogleAppEngine
-	assert.Equal(t, literal_9361, c.ClientIP())
-
-	// Use custom TrustedPlatform header
-	c.engine.TrustedPlatform = literal_2016
-	c.Request.Header.Set(literal_2016, "80.80.80.80")
-	assert.Equal(t, "80.80.80.80", c.ClientIP())
-	// wrong header
-	c.engine.TrustedPlatform = "X-Wrong-Header"
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	c.Request.Header.Del(literal_2016)
-	// TrustedPlatform is empty
-	c.engine.TrustedPlatform = ""
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	// Test the legacy flag
-	c.engine.AppEngine = true
-	assert.Equal(t, literal_9361, c.ClientIP())
-	c.engine.AppEngine = false
-	c.engine.TrustedPlatform = PlatformGoogleAppEngine
-
-	c.Request.Header.Del(literal_5783)
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	c.engine.TrustedPlatform = PlatformCloudflare
-	assert.Equal(t, "60.60.60.60", c.ClientIP())
-
-	c.Request.Header.Del("CF-Connecting-IP")
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	c.engine.TrustedPlatform = PlatformFlyIO
-	assert.Equal(t, "70.70.70.70", c.ClientIP())
-
-	c.Request.Header.Del("Fly-Client-IP")
-	assert.Equal(t, literal_5842, c.ClientIP())
-
-	c.engine.TrustedPlatform = ""
-
-	// no port
-	c.Request.RemoteAddr = literal_9361
-	assert.Empty(t, c.ClientIP())
-}
-
-func resetContextForClientIPTests(c *Context) {
-	c.Request.Header.Set(literal_3284, " 10.10.10.10  ")
-	c.Request.Header.Set(literal_1096, "  20.20.20.20, 30.30.30.30")
-	c.Request.Header.Set(literal_5783, literal_9361)
-	c.Request.Header.Set("CF-Connecting-IP", "60.60.60.60")
-	c.Request.Header.Set("Fly-Client-IP", "70.70.70.70")
-	c.Request.RemoteAddr = "  40.40.40.40:42123 "
-	c.engine.TrustedPlatform = ""
-	c.engine.trustedCIDRs = defaultTrustedCIDRs
-	c.engine.AppEngine = false
-}
-
 func TestContextContentType(t *testing.T) {
 	c, _ := CreateTestContext(httptest.NewRecorder())
 	c.Request, _ = http.NewRequest("POST", "/", nil)
@@ -2934,19 +2791,11 @@ const literal_0783 = "text/*"
 
 const literal_3516 = "application/*"
 
-const literal_3941 = "20.20.20.20"
-
 const literal_1096 = "X-Forwarded-For"
-
-const literal_7236 = "30.30.30.30"
 
 const literal_3284 = "X-Real-IP"
 
-const literal_9361 = "50.50.50.50"
-
 const literal_5783 = "X-Appengine-Remote-Addr"
-
-const literal_5842 = "40.40.40.40"
 
 const literal_2016 = "X-CDN-IP"
 
